@@ -1,0 +1,333 @@
+include mixins/base
+
+doctype html
+html
+  head
+    title Zephyrus Demo
+    meta(charset="utf-8")
+    style.
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;700&display=swap');
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html, body {
+        height: 100%
+      }
+
+      html {
+        font-size: 100%;
+      }
+
+      body {
+        font-size: 1rem;
+        font-weight: 300;
+        font-family: 'Noto Sans JP', sans-serif;
+        background-color: #fff;
+      }
+
+      @media (min-width: 576px) {
+        .container {
+          max-width: 540px;
+        }
+      }
+
+      @media (min-width: 768px) {
+        .container {
+          max-width: 720px;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .container {
+          max-width: 960px;
+        }
+      }
+
+      @media (min-width: 1200px) {
+        .container {
+          max-width: 1140px;
+        }
+      }
+
+      .container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      header {
+        height: 120px;
+      }
+
+      header > .container img {
+        width: 200px;
+      }
+
+      header > .container {
+        padding-top: 16px;
+        padding-bottom: 16px;
+        opacity: 0.75;
+      }
+
+      header .version {
+        font-size: 1.8rem;
+        text-align: right;
+        padding-top: 24px;
+        opacity: 0.75;
+      }
+
+      nav {
+        position: sticky;
+        top: 0;
+        height: 82px;
+        background: #B24592;
+        background: -webkit-linear-gradient(to left, #F15F79, #B24592);
+        background: linear-gradient(to left, #F15F79, #B24592);
+      }
+
+      .row {
+        display: flex;
+      }
+
+      .col {
+        flex-grow: 1;
+      }
+
+      nav > .container > h4 {
+        color: #fff;
+        font-weight: 200;
+        padding-top: 22px;
+        text-transform: uppercase;
+        font-size: 1.5rem;
+        line-height: 1.2;
+      }
+
+      nav > .container > h4 > img {
+        margin-right: 16px;
+        position: relative;
+        top: 0;
+        width: 40px;
+        fill: #fff;
+      }
+
+      nav > .container > h4 > span:first-of-type {
+        top: -12px;
+        position: relative;
+      }
+
+      nav > .container > h4 > span:last-of-type {
+        font-size: 0.9rem;
+        position: relative;
+        top: -14px;
+        margin-left: 4px;
+        opacity: 0.7;
+      }
+
+      main {
+        padding-top: 32px;
+        padding-bottom: 160px;
+      }
+
+      a {
+        color: #B24592;
+      }
+
+      a:hover {
+        color: #B24592;
+        text-decoration: underline;
+      }
+
+      table code {
+        color: #B24592;
+        border-radius: 0;
+        padding: 0;
+        background: none;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table tr td {
+        border-top: 1px solid #e0e0e0;
+        padding: 8px;
+      }
+
+      table.info > tbody > tr > td:first-of-type {
+        width: 40%;
+        vertical-align: top;
+        font-weight: 400;
+      }
+
+      table.info > tbody > tr > td:last-of-type {
+        background: #f5f5f5;
+        border-top: 1px dashed #e0e0e0;
+      }
+
+      table.info > tbody > tr:last-of-type > td {
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      table.info > tbody > tr:last-of-type > td:last-of-type {
+        border-bottom: 1px dashed #e0e0e0;
+      }
+
+      code {
+        color: #B24592;
+        border-radius: 4px;
+        padding: 3px;
+        background: #f5f5f5;
+      }
+
+      .circle-loader {
+        margin-bottom: 3.5em;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-left-color: #5cb85c;
+        animation: loader-spin 1.2s infinite linear;
+        position: relative;
+        display: inline-block;
+        vertical-align: top;
+        border-radius: 50%;
+        width: 7em;
+        height: 7em;
+      }
+
+      .load-complete {
+        -webkit-animation: none;
+        animation: none;
+        border-color: #5cb85c;
+        transition: border 500ms ease-out;
+      }
+
+      .checkmark {
+        display: none;
+      }
+
+      .checkmark.draw:after {
+        animation-duration: 800ms;
+        animation-timing-function: ease;
+        animation-name: checkmark;
+        transform: scaleX(-1) rotate(135deg);
+      }
+
+      .checkmark:after {
+        opacity: 1;
+        height: 3.5em;
+        width: 1.75em;
+        transform-origin: left top;
+        border-right: 3px solid #5cb85c;
+        border-top: 3px solid #5cb85c;
+        content: '';
+        left: 1.75em;
+        top: 3.5em;
+        position: absolute;
+      }
+
+      @keyframes loader-spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes checkmark {
+        0% {
+          height: 0;
+          width: 0;
+          opacity: 1;
+        }
+        20% {
+          height: 0;
+          width: 1.75em;
+          opacity: 1;
+        }
+        40% {
+          height: 3.5em;
+          width: 1.75em;
+          opacity: 1;
+        }
+        100% {
+          height: 3.5em;
+          width: 1.75em;
+          opacity: 1;
+        }
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .success {
+        font-size: 1.6rem;
+      }
+
+      .success p {
+        font-size: 1.6rem;
+      }
+
+      .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #212529;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        text-decoration: none;
+      }
+
+      .btn.btn-success {
+        color: #fff;
+        background-color: #28a745;
+        border-color: #28a745;
+        text-decoration: none;
+      }
+
+      .btn-success:hover {
+        color: #fff;
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+
+      .btn:hover {
+        text-decoration: none;
+      }
+
+      .btn-group-lg > .btn, .btn-lg {
+        padding: .5rem 1rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        border-radius: .3rem;
+      }
+
+  body
+    header
+      .container
+        .row
+          .col: img(src=zephyrus_logo)
+          .col.version="v" + zephyrus_version
+    nav
+      .container
+        h4
+          img(src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMi4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCA2NCA2NCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNjQgNjQ7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIHN0eWxlPSJmaWxsOiNGRkZGRkY7IiBkPSJNMTcuMiwyNS4yYy0wLjYtMC40LTEuMS0wLjYtMS43LTAuNkgxM3YxNC45aDIuNWMwLjYsMCwxLjEtMC4yLDEuNy0wLjZjMC42LTAuNCwwLjgtMSwwLjgtMS45VjI3DQoJQzE4LDI2LjIsMTcuNywyNS42LDE3LjIsMjUuMkwxNy4yLDI1LjJ6IE01Ny43LDBINi4zQzIuOCwwLDAsMi44LDAsNi4zdjUxLjVDMCw2MS4yLDIuOCw2NCw2LjMsNjRoNTEuNWMzLjUsMCw2LjMtMi44LDYuMy02LjNWNi4zDQoJQzY0LDIuOCw2MS4yLDAsNTcuNywweiBNMjIsMzdjMCwyLjctMS43LDYuOC02LjksNi44SDguNVYyMC4xaDYuOGM1LjEsMCw2LjgsNC4xLDYuOCw2LjhMMjIsMzdMMjIsMzd6IE0zNi40LDI0LjRoLTcuNnY1LjVoNC43djQuMg0KCWgtNC43djUuNWg3LjZ2NC4yaC04LjljLTEuNiwwLTIuOS0xLjItMy0yLjhWMjMuMWMwLTEuNiwxLjItMi45LDIuOC0zaDlMMzYuNCwyNC40TDM2LjQsMjQuNHogTTUxLjIsNDAuOGMtMS45LDQuNC01LjMsMy41LTYuOCwwDQoJbC01LjUtMjAuN2g0LjdsNC4yLDE2LjJsNC4yLTE2LjJoNC43TDUxLjIsNDAuOEw1MS4yLDQwLjh6Ii8+DQo8L3N2Zz4NCg==")
+          span Zephyrus
+          span="/ Configuration projet"
+    main
+      .container
+        block content

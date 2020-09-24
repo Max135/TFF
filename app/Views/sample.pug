@@ -1,0 +1,72 @@
+extends sample-layout
+
+block content
+  h1="PHP v" + version
+  br
+  br
+  table.info
+    each data, section in php_info
+      if section === 'General' || section === 'apache2handler'
+        each value, parameter in data
+          tr
+            td=parameter
+            td=value
+
+  br
+  br
+  br
+  br
+  h1 Configurations Zephyrus #[code /config.ini]
+  br
+  br
+  table.info
+    each data, title in config
+      each value, key in data
+        tr
+          td=key
+          if key === "password"
+            td *********
+          else
+            td=(is_bool(value)) ? ((value) ? "true" : "false") : value
+
+  br
+  br
+  br
+  br
+  h1 Formattages disponibles
+  br
+  br
+  table.info
+    tr
+      td: code format('datetime', '2020-04-17 08:40:12')
+      td=format('datetime', '2020-04-17 08:40:12')
+    tr
+      td: code format('time', '2020-04-17 08:40:12')
+      td=format('time', '2020-04-17 08:40:12')
+    tr
+      td: code format('date', '2020-04-17 08:40:12')
+      td=format('date', '2020-04-17 08:40:12')
+    tr
+      td: code format('money', 9274.12)
+      td=format('money', 9274.12)
+    tr
+      td: code format('decimal', 1234.56789)
+      td=format('decimal', 1234.56789)
+    tr
+      td: code format('decimal', 1234.56789, 2, 2)
+      td=format('decimal', 1234.56789, 2, 2)
+    tr
+      td: code format('percent', 0.5612)
+      td=format('percent', 0.5612)
+    tr
+      td: code format('percent', 0.5612, 1, 1)
+      td=format('percent', 0.5612, 1, 1)
+    tr
+      td: code format('percent', 0.5612, 0, 0)
+      td=format('percent', 0.5612, 0, 0)
+    tr
+      td: code format('duration', 5000)
+      td=format('duration', 5000)
+    tr
+      td: code format('seourl', 'Une BeLLE clÉmantINE')
+      td=format('seourl', 'Une BeLLE clÉmantINE')

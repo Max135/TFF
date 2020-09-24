@@ -1,0 +1,9 @@
+{
+  "errors": {
+    "authenticate": "Les informations d'authentification sont invalides",
+    "username_already_taken": "Le nom d'utilisateur existe déjà pour un autre client",
+    "email_invalid": "Le courriel est invalide",
+    "username_empty": "Le nom d'utilisateur ne doit pas être vide",
+    "email_empty": "Le courriel ne doit pas être vide"
+  }
+}
