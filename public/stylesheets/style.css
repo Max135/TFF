@@ -1,0 +1,16 @@
+@import "vendor/bootstrap.min.css";
+@import "vendor/fontawesome.min.css";
+
+body {
+
+}
+
+.wrapper.style3 {
+    /*background-color: black;*/
+    color: green;
+    background-image: url("/images/pexels-photo-2080960.jpeg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    position: relative;
+}
