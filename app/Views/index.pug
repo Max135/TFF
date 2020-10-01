@@ -5,26 +5,47 @@ html
         link(href="/stylesheets/main.css" rel="stylesheet")
         link(href="/stylesheets/style.css" rel="stylesheet")
     body
-        .carousel.slide(data-ride="carousel")
-            .carousel-inner
-                .carousel-item.active
-                    img.d-block.w-100(src="/stylesheets/images/49690.jpg" alt="First")
+        .row
+            header.alt#header
+                .logo
+                    img(src="/stylesheets/images/Logo.png" height=50)
+                a(href="#menu") Menu
 
-                .carousel-item
-                    img.d-block.w-100(src="/stylesheets/images/carousel2.jpg" alt="second")
+        section.banner.full
+            article.item1
+                img(src="/stylesheets/images/49690.jpg")
+                .inner
+                    header
+                        p Making fishing smarter than ever before
+                        h2 TFF
+            article.item2
+                img(src="/stylesheets/images/carousel2.jpg")
+                .inner
+                    header
+                        p To catch all the fish of your dreams
+                        h2 Make Dreams Happen
+            article.item3
+                img(src="/stylesheets/images/pexels-azwar-azwar-1133086.jpg")
+                .inner
+                    header
+                        p To connect with all your fisherman friends
+                        h2 Hotspot sharing
+            article.item4
+                img(src="/stylesheets/images/pexels-quang-nguyen-vinh-2131967.jpg")
+                .inner
+                    header
+                        p Making Fishing smarter than ever before
+                        h2 TFF
+            article.item5
+                img(src="/stylesheets/images/pexels-pixabay-210271.jpg")
+                .inner
+                    header
+                        p because we put the sexy in TFF.sexy
+                        h2 TFF
 
-                .carousel-item
-                    img.d-block.w-100(src="/stylesheets/images/carousel3.jpg" alt="third")
 
-            a.carousel-control-prev(href="#carouselExempleControls" role="button" data-slide="prev")
-                span.carousel-control-prev-icon(aria-hidden="true")
-                span.sr-only Previous
 
-            a.carousel-control-next(href="#carouselExempleControls" role="button" data-slide="next")
-                span.carousel-control-next-icon(aria-hidden="true")
-                span.sr-only Next
-
-        .wrapper.style3
+        .wrapper.style3.style3Alt
             .inner
                 header.align-center
                     p="Fishing made smarter and easier 👏"
@@ -37,7 +58,7 @@ html
                     div
                         .box
                             .image.fit
-                                img(src="/stylesheets/images/49690.jpg")
+                                img(src="/stylesheets/images/pexels-mohi-syed-50614.jpg" height=400)
 
                             .content
                                 header.align-center
@@ -52,7 +73,7 @@ html
                     div
                         .box
                             .image.fit
-                                img(src="/stylesheets/images/49690.jpg")
+                                img(src="/stylesheets/images/pexels-tomasz-filipek-1630039.jpg" height=400)
 
                             .content
                                 header.align-center
@@ -76,3 +97,15 @@ html
                     i.fab.fa-github.fa-2x
             br
             .copyright © TFF. Some rights reserved.
+
+        script(src="/javascripts/vendor/jquery-3.5.1.min.js")
+        script(src="/javascripts/vendor/jquery.scrollex.min.js")
+        script(src="/javascripts/vendor/skel.min.js")
+        script(src="/javascripts/vendor/util.js")
+        script(src="/javascripts/vendor/main.js")
+        nav#menu
+            ul.links
+                li: a(href="#") Home
+                li: a(href="#") Login
+                li: a(href="#") ???
+            a.close(href="#menu")

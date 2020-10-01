@@ -5,7 +5,7 @@ body {
 
 }
 
-.wrapper.style3 {
+.wrapper.style3Alt {
     /*background-color: black;*/
     color: green;
     background-image: url("/images/pexels-photo-2080960.jpeg");
@@ -13,4 +13,34 @@ body {
     background-attachment: fixed;
     background-position: center;
     position: relative;
+}
+
+.item1 {
+    background-image: url("/images/49690.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.item2 {
+    background-image: url("/images/carousel2.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.item3 {
+    background-image: url("/images/pexels-azwar-azwar-1133086.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.item4 {
+    background-image: url("/images/pexels-quang-nguyen-vinh-2131967.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.item5 {
+    background-image: url("/images/pexels-pixabay-210271.jpg");
+    background-position: center;
+    background-size: cover;
 }
