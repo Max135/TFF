@@ -121,6 +121,7 @@ body {
 
 .login {
     margin-top: 300px;
+    width: 20rem;
 }
 
 .loginContainer > .form-control:focus{
@@ -129,7 +130,7 @@ body {
 }
 
 .loginContainer > .form-control::placeholder {
-    color: #ffffff;
+    color: black;
 }
 
 .loginContainer > .form-control:focus::placeholder{
