@@ -44,3 +44,119 @@ body {
     background-position: center;
     background-size: cover;
 }
+
+/* Login style */
+
+.loginTitle {
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 36px;
+    color: #fff;
+    opacity: 0.8;
+}
+
+.backgroundGrid {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+.backgroundGrid:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: url("images/dotgrid.png") repeat;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    opacity: 0.7;
+}
+
+.backgroundGrid:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    opacity: 0.4;
+    background: rgb(255,145,164);
+    background: -moz-linear-gradient(bottom,rgba(255,145,164,1) 0%, rgba(255,255,255,1) 100%);
+    background: -webkit-linear-gradient(bottom,rgba(255,145,164,1) 0%, rgba(255,255,255,1) 100%);
+    background: linear-gradient(bottom,rgba(255,145,164,1) 0%, rgba(255,255,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff91a4",endColorstr="#ffffff",GradientType=1);
+}
+
+.loginVideo {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+.loginContainer {
+    left: 100px;
+    right: 100px;
+    position: absolute;
+    z-index: 10;
+    width: 100%;
+}
+
+.loginContainer > .form-control {
+    font: inherit;
+    font-weight: lighter;
+    border-radius: 5px;
+    width: 500px;
+    background: #fff7;
+    border: none;
+    margin-bottom: 12px;
+}
+
+.login {
+    margin-top: 300px;
+}
+
+.loginContainer > .form-control:focus{
+    color: black;
+    outline: 0; !important;
+}
+
+.loginContainer > .form-control::placeholder {
+    color: #ffffff;
+}
+
+.loginContainer > .form-control:focus::placeholder{
+    color: black;
+}
+
+.form-button {
+    font-size: 10px;
+    font-weight: lighter;
+    border-radius: 5px;
+    width: auto;
+    background: #57BD75;
+    margin-left: 78%;
+    color: white;
+    height: 36px;
+}
+
+.form-text {
+    color: #ffffff;
+}
+
+.loginTitle {
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 36px;
+    color: #fff;
+    opacity: 0.8;
+}
