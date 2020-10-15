@@ -8,6 +8,7 @@ class LoginController extends \Zephyrus\Application\Controller
      */
     public function initializeRoutes()
     {
+        $this->get("/", "login");
         $this->get("/index", "index");
         $this->get("/login", "login");
         $this->post("/login", "loginUser");

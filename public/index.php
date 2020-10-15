@@ -1,6 +1,6 @@
 <?php
 
-use Zephyrus\Application\Bootstrap;
+//use Zephyrus\Application\Bootstrap;
 use Zephyrus\Exceptions\RouteMethodUnsupportedException;
 use Zephyrus\Exceptions\RouteNotAcceptedException;
 use Zephyrus\Exceptions\RouteNotFoundException;
