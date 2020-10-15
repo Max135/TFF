@@ -40,7 +40,7 @@ body {
 }
 
 .item5 {
-    background-image: url("/images/pexels-pixabay-210271.jpg");
+    background-image: url("/images/pexels-adam-kontor-351127.jpg");
     background-position: center;
     background-size: cover;
 }
@@ -124,12 +124,12 @@ body {
     width: 20rem;
 }
 
-.loginContainer > .form-control:focus{
+.login > .form-control:focus{
     color: black;
     outline: 0; !important;
 }
 
-.loginContainer > .form-control::placeholder {
+.login > .form-control::placeholder {
     color: black;
 }
 
