@@ -13,6 +13,7 @@ class LoginController extends \Zephyrus\Application\Controller
         $this->get("/login", "login");
         $this->post("/login", "loginUser");
         $this->get("/signup", "signup");
+        $this->get("/map", "showMap");
     }
 
     public function index() {
@@ -34,6 +35,12 @@ class LoginController extends \Zephyrus\Application\Controller
     public function signup() {
         return $this->render("signup", [
             'title' => 'Signup'
+        ]);
+    }
+
+    public function showMap() {
+        return $this->render("map", [
+            'title' => 'Map'
         ]);
     }
 }
