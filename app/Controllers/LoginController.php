@@ -4,6 +4,7 @@ use Models\Brokers\UserBroker;
 use Zephyrus\Application\Flash;
 use Zephyrus\Application\Rule;
 use Zephyrus\Application\Session;
+use Zephyrus\Security\Cryptography;
 
 class LoginController extends \Zephyrus\Application\Controller
 {
@@ -13,26 +14,30 @@ class LoginController extends \Zephyrus\Application\Controller
      */
     public function initializeRoutes()
     {
-        $this->get("/", "login");
-        $this->get("/index", "index");
-        $this->get("/login", "login");
-        $this->post("/login", "loginUser");
-        $this->get("/signup", "signup");
+        $this->get("/", "renderLogin");
+        $this->get("/index", "renderIndex");
+
+        $this->get("/login", "renderLogin");
+        $this->post("/login", "login");
+
+        $this->get("/signup", "renderSignup");
+        $this->post('/signup', 'signup');
+
     }
 
-    public function index() {
+    public function renderIndex() {
         return $this->render("index", [
            'title'=>'Index'
         ]);
     }
 
-    public function login() {
+    public function renderLogin() {
         return $this->render("login", [
             'title' => 'Login'
         ]);
     }
 
-    public function loginUser() {
+    public function login() {
         $form = $this->buildForm();
         $form->validate('password', Rule::notEmpty("password empty"));
 
@@ -56,9 +61,39 @@ class LoginController extends \Zephyrus\Application\Controller
         }
     }
 
-    public function signup() {
+    public function renderSignup()
+    {
         return $this->render("signup", [
             'title' => 'Signup'
         ]);
+    }
+
+    public function signup()
+    {
+        $form = $this->buildForm();
+
+        $form->validate('username', Rule::notEmpty('username empty'));
+        $form->validateWhenFieldHasNoError('username', Rule::alpha('Wtf username', false));
+
+        $form->validate('password', Rule::notEmpty('empty password dumdum'));
+        $form->validateWhenFieldHasNoError('password', Rule::passwordCompliant('Bad password'));
+
+        if ($form->getValue('password') != $form->getValue('passwordConfirmation')) {
+            $form->addError('passwordConfirmation', 'passwords do not match');
+        }
+
+        if(!$form->verify()) {
+            Flash::error($form->getErrorMessages());
+            return $this->redirect('/signup');
+        }
+
+        $email = $form->getValue('email');
+        $username = $form->getValue('username');
+        $password = $form->getValue('password');
+
+        $id = (new UserBroker())->insert($email, $username, $password);
+        Session::getInstance()->set('id', $id);
+
+        return $this->redirect('/map');
     }
 }
