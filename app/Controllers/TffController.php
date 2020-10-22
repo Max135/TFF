@@ -8,7 +8,7 @@ class TffController extends Controller
 
     public function initializeRoutes()
     {
-        // TODO: Implement initializeRoutes() method.
+        $this->get("/map", "showMap");
     }
 
     public function before(): ?Response
@@ -18,5 +18,11 @@ class TffController extends Controller
         }
 
         return $this->redirect('/login');
+    }
+
+    public function showMap() {
+        return $this->render("map", [
+            'title' => 'Map'
+        ]);
     }
 }
