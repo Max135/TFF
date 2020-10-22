@@ -13,9 +13,9 @@ drop table if exists User;
 
 create table User (
     id int auto_increment primary key,
-    email varchar(50) unique,
-    password varchar(20),
-    username varchar(20),
+    email varchar(255) unique,
+    password varchar(255),
+    username varchar(255),
     picture blob
 );
 
