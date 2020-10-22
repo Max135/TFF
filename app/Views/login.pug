@@ -16,7 +16,7 @@ html
         .login.p-2
             h2.loginTitle="Login"
             +flash
-            +form("post", "#")
+            +form("post", "/login")
                 .form-group
                     .form-label-group.formField
                         input(type="text" name="email" class="form-control login-form-border" placeholder="email" style="padding-left:33px;")
