@@ -38,10 +38,10 @@ class LoginController extends \Zephyrus\Application\Controller
 
     public function login() {
         $form = $this->buildForm();
-        $form->validate('password', Rule::notEmpty("password empty"));
+        $form->validate('password', Rule::notEmpty("Password empty"));
 
-        $form->validate('email', Rule::notEmpty("email empty"));
-        $form->validateWhenFieldHasNoError('email', Rule::email("email no good"));
+        $form->validate('email', Rule::notEmpty("Email empty"));
+        $form->validateWhenFieldHasNoError('email', Rule::email("Email no good"));
 
         if(!$form->verify()) {
             Flash::error($form->getErrorMessages());
