@@ -148,6 +148,10 @@ body {
     height: 36px;
 }
 
+.form-button:hover {
+    background-color: #1c7430;
+}
+
 .form-text {
     color: #ffffff;
 }
@@ -158,9 +162,15 @@ body {
     letter-spacing: 2px;
     text-align: center;
     margin-bottom: 36px;
-    color: #fff;
+    color: white;
     opacity: 0.8;
 }
+
+.formField {
+    background-color: white;
+}
+
+/* MAP */
 
 #map {
     position: absolute;
