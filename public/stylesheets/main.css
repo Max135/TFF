@@ -3770,7 +3770,7 @@
 			}
 
 				#header > a[href="#menu"]:before {
-					content: "";
+					content: "🐟";
 					-moz-osx-font-smoothing: grayscale;
 					-webkit-font-smoothing: antialiased;
 					font-family: FontAwesome;
@@ -3961,7 +3961,7 @@
 			}
 
 			#menu .close:before {
-				content: '\f00d';
+				content: '🐟';
 				font-size: 1.25rem;
 			}
 
