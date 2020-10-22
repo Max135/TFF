@@ -71,6 +71,30 @@ class LoginController extends \Zephyrus\Application\Controller
     {
         $form = $this->buildForm();
 
+        $this->validateSignupForm($form);
+
+        if(!$form->verify()) {
+            Flash::error($form->getErrorMessages());
+            return $this->redirect('/signup');
+        }
+
+        $id = $this->signupUser($form);
+        Session::getInstance()->set('id', $id);
+
+        return $this->redirect('/map');
+    }
+
+    private function signupUser($form): int
+    {
+        $email = $form->getValue('email');
+        $username = $form->getValue('username');
+        $password = $form->getValue('password');
+
+        return (new UserBroker())->insert($email, $username, $password);
+    }
+
+    private function validateSignupForm($form)
+    {
         $form->validate('username', Rule::notEmpty('username empty'));
         $form->validateWhenFieldHasNoError('username', Rule::alpha('Wtf username', false));
 
@@ -80,19 +104,5 @@ class LoginController extends \Zephyrus\Application\Controller
         if ($form->getValue('password') != $form->getValue('passwordConfirmation')) {
             $form->addError('passwordConfirmation', 'passwords do not match');
         }
-
-        if(!$form->verify()) {
-            Flash::error($form->getErrorMessages());
-            return $this->redirect('/signup');
-        }
-
-        $email = $form->getValue('email');
-        $username = $form->getValue('username');
-        $password = $form->getValue('password');
-
-        $id = (new UserBroker())->insert($email, $username, $password);
-        Session::getInstance()->set('id', $id);
-
-        return $this->redirect('/map');
     }
 }
