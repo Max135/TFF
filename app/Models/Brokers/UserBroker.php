@@ -31,7 +31,7 @@ class UserBroker extends Broker
         $sql = "select password from User where email = ?";
         $hashedPassword = $this->selectSingle($sql, [$email]);
         if ($hashedPassword != null) {
-            return Cryptography::verifyHashedPassword($password, $hashedPassword);
+            return Cryptography::verifyHashedPassword($password, $hashedPassword->password);
         }
         return false;
     }

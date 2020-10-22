@@ -78,9 +78,9 @@ class LoginController extends \Zephyrus\Application\Controller
             return $this->redirect('/signup');
         }
 
-        $id = $this->signupUser($form);
+        $this->signupUser($form);
 
-        return $this->redirect('/');
+        return $this->redirect('/login');
     }
 
     private function signupUser($form): int
