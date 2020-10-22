@@ -4,7 +4,6 @@ use Models\Brokers\UserBroker;
 use Zephyrus\Application\Flash;
 use Zephyrus\Application\Rule;
 use Zephyrus\Application\Session;
-use Zephyrus\Security\Cryptography;
 
 class LoginController extends \Zephyrus\Application\Controller
 {
@@ -14,7 +13,7 @@ class LoginController extends \Zephyrus\Application\Controller
      */
     public function initializeRoutes()
     {
-        $this->get("/", "renderLogin");
+        $this->get("/", "renderIndex");
         $this->get("/index", "renderIndex");
 
         $this->get("/login", "renderLogin");

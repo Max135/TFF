@@ -124,6 +124,10 @@ body {
     width: 20rem;
 }
 
+.signup {
+    margin-top: 300px;
+}
+
 .login > .form-control:focus{
     color: black;
     outline: 0; !important;

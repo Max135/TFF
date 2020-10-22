@@ -12,23 +12,21 @@ html
         video.loginVideo(autoplay muted loop)
             source(src="/stylesheets/video/burning.mp4" type="video/mp4")
 
-    .container.d-flex.justify-content-center
-            h2="Login"
+    .container.loginContainer.d-flex.justify-content-center
+        .login.p-2
+            h2.loginTitle="Signup"
             +form("post", "#")
-                .form-row
-                    .form-group.col-6
-                        label.form-control Email
-                        input.form-control(type="text" name="email")
-                    .form-group.col-6
-                        label.form-control Username
-                        input.form-control(type="text" name="username")
-                .form-row
-                    .form-group
-                        label.form-control Password
-                        input.form-control(type="password" name="password")
-
-                    .form-group
-                        label.form-control Password
-                        input.form-control(type="password" name="password")
+                .form-group
+                    .form-label-group.formField
+                        input(type="text" name="email" class="form-control login-form-border" placeholder="email" style="padding-left:33px;")
                     br
-                    button.btn.btn-sm.btn-succes.text-uppercase(type="submit" class="form-button") Login
+                    .form-label-group.formField
+                        input(type="text" name="username" class="form-control login-form-border" placeholder="username" style="padding-left:33px;")
+                    br
+                    .form-label-group.formField
+                        input(type="password" name="password" class="form-control login-form-border" placeholder="password" style="padding-left:33px;")
+                    br
+                    .form-label-group.formField
+                        input(type="password" name="password" class="form-control login-form-border" placeholder="password confirmation" style="padding-left:33px;")
+                    br
+                    button.btn.btn-sm.btn-succes.text-uppercase.form-button(type="submit" class="form-button") Signup
