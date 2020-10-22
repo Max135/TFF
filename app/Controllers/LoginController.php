@@ -56,7 +56,7 @@ class LoginController extends \Zephyrus\Application\Controller
             return $this->redirect('/map');
         } else {
             Flash::error('invalid credentials');
-            return $this->redirect('/');
+            return $this->redirect('/login');
         }
     }
 
@@ -89,7 +89,7 @@ class LoginController extends \Zephyrus\Application\Controller
         $username = $form->getValue('username');
         $password = $form->getValue('password');
 
-        return (new UserBroker())->insert($email, $username, $password);
+        return (new UserBroker())->insert($email, $password, $username);
     }
 
     private function validateSignupForm($form)
