@@ -79,9 +79,8 @@ class LoginController extends \Zephyrus\Application\Controller
         }
 
         $id = $this->signupUser($form);
-        Session::getInstance()->set('id', $id);
 
-        return $this->redirect('/map');
+        return $this->redirect('/');
     }
 
     private function signupUser($form): int
