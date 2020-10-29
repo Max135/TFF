@@ -80,3 +80,7 @@ create table Friend (
 
 alter table Friend
     add constraint pk_Friend primary key (userOne, userTwo);
+
+
+# Password = Omega123
+insert into User values (default, "qwe@qwe.qwe", "$2y$10$.PWFhre43nG7h88stW/.PelsIe09hwLROWIkkij4o8NgDYZtP6/c.", "qwe", null);
