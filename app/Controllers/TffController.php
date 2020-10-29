@@ -9,6 +9,8 @@ class TffController extends Controller
     public function initializeRoutes()
     {
         $this->get("/map", "showMap");
+        $this->get('/test', 'renderTest');
+        $this->get('/hub', 'renderHub');
     }
 
 //    public function before(): ?Response
@@ -19,6 +21,16 @@ class TffController extends Controller
 //
 //        return $this->redirect('/login');
 //    }
+
+    public function renderHub()
+    {
+        return $this->render('hub');
+    }
+
+    public function renderTest()
+    {
+        return $this->render('navbar');
+    }
 
     public function showMap() {
         return $this->render("map", [
