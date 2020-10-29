@@ -11,6 +11,8 @@ class TffController extends Controller
         $this->get("/map", "showMap");
         $this->get('/test', 'renderTest');
         $this->get('/hub', 'renderHub');
+        $this->get('/friends', 'renderAcquaintances');
+        $this->get('/options', 'renderHub');
     }
 
 //    public function before(): ?Response
@@ -21,6 +23,11 @@ class TffController extends Controller
 //
 //        return $this->redirect('/login');
 //    }
+
+    public function renderAcquaintances()
+    {
+        return $this->render('acquaintances');
+    }
 
     public function renderHub()
     {
