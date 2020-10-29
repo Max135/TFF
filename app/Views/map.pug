@@ -6,7 +6,7 @@ html
     title=title
     link(href="/stylesheets/main.css" rel="stylesheet")
     link(href="/stylesheets/style.css" rel="stylesheet")
-    script(src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js' nonce=nonce())
+    script(src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js' nonce=nonce() script-src='self')
     link(href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' type='text/stylesheet' nonce=nonce())
   body.map
     div#map
@@ -50,4 +50,4 @@ html
             );
         });
 
-        
+    div#test

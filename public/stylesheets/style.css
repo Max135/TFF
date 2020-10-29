@@ -191,4 +191,12 @@ body {
     top: 0;
     bottom: 0;
     width: 100%;
+    z-index: 1;
+}
+
+#test {
+    background-color: red;
+    height: 100px;
+    width: 100px;
+    z-index: 100;
 }
