@@ -6,50 +6,52 @@ html
     title=title
     link(href="/stylesheets/main.css" rel="stylesheet")
     link(href="/stylesheets/style.css" rel="stylesheet")
-    script(src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js' nonce=nonce() script-src='self')
+    script(src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js' nonce=nonce())
     link(href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' type='text/stylesheet' nonce=nonce())
-  body.map
+  body
     .row
-      .col-sm-3(style="height: 100%; width: 200px; background-color: red;")
-      .col-sm-9#map
-      script(nonce=nonce()).
-          mapboxgl.accessToken = 'pk.eyJ1Ijoid29vbnRvcG9saXMiLCJhIjoiY2tnYXoxMGVkMDgzMjJ2bTVqeTRrY2FuaiJ9.hg2PeuwIn4SPCMEFLt7mbw';
-          var map = new mapboxgl.Map({
-              container: 'map',
-              style: 'mapbox://styles/mapbox/streets-v11',
-              center: [-72.88, 45.62], // Long, Lat
-              zoom: 5,
-              minZoom: 3
-          });
-          map.on('load', function () {
-              map.addSource('10m-bathymetry-81bsvj', {
-                  type: 'vector',
-                  url: 'mapbox://mapbox.9tm8dx88'
-              });
-              map.addLayer(
-                  {
-                      'id': '10m-bathymetry-81bsvj',
-                      'type': 'fill',
-                      'source': '10m-bathymetry-81bsvj',
-                      'source-layer': '10m-bathymetry-81bsvj',
-                      'layout': {},
-                      'paint': {
-                          'fill-outline-color': 'hsla(337, 82%, 62%, 0)',
-                          // cubic bezier is a four point curve for smooth and precise styling
-                          // adjust the points to change the rate and intensity of interpolation
-                          'fill-color': [
-                              'interpolate',
-                              ['cubic-bezier', 0, 0.5, 1, 0.5],
-                              ['get', 'DEPTH'],
-                              200,
-                              '#78bced',
-                              9000,
-                              '#15659f'
-                          ]
-                      }
-                  },
-                  'land-structure-polygon'
-              );
-          });
-
-    div#test
+      .col-9.m-0.p-0#mapContainer
+        div#map
+        script(nonce=nonce()).
+            mapboxgl.accessToken = 'pk.eyJ1Ijoid29vbnRvcG9saXMiLCJhIjoiY2tnYXoxMGVkMDgzMjJ2bTVqeTRrY2FuaiJ9.hg2PeuwIn4SPCMEFLt7mbw';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [-72.88, 45.62], // Long, Lat
+                zoom: 5,
+                minZoom: 3
+            });
+            var marker = new mapboxgl.Marker()
+                .setLngLat([12.550343, 55.665957])
+                .addTo(map);
+            map.on('load', function () {
+                map.addSource('10m-bathymetry-81bsvj', {
+                    type: 'vector',
+                    url: 'mapbox://mapbox.9tm8dx88'
+                });
+                map.addLayer(
+                    {
+                        'id': '10m-bathymetry-81bsvj',
+                        'type': 'fill',
+                        'source': '10m-bathymetry-81bsvj',
+                        'source-layer': '10m-bathymetry-81bsvj',
+                        'layout': {},
+                        'paint': {
+                            'fill-outline-color': 'hsla(337, 82%, 62%, 0)',
+                            // cubic bezier is a four point curve for smooth and precise styling
+                            // adjust the points to change the rate and intensity of interpolation
+                            'fill-color': [
+                                'interpolate',
+                                ['cubic-bezier', 0, 0.5, 1, 0.5],
+                                ['get', 'DEPTH'],
+                                200,
+                                '#78bced',
+                                9000,
+                                '#15659f'
+                            ]
+                        }
+                    },
+                    'land-structure-polygon'
+                );
+            });
+      .col-3.m-0.p-0#infoContainer
