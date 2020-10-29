@@ -159,9 +159,10 @@ abstract class SecurityController extends ZephyrusBaseController
         $csp->setFontSources(["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com']);
         $csp->setStyleSources(["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com']);
         $csp->setScriptSources(["'self'", 'https://ajax.googleapis.com', 'https://maps.googleapis.com',
-            'https://www.google-analytics.com', 'http://connect.facebook.net']);
+            'https://www.google-analytics.com', 'http://connect.facebook.net', 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js']);
         $csp->setChildSources(["'self'", 'http://staticxx.facebook.com']);
         $csp->setImageSources(["'self'", 'data:']);
+        $csp->setWorkerSources(["'self'", 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js']);
         $csp->setBaseUri([$this->request->getBaseUrl()]);
 
         /**
