@@ -11,12 +11,9 @@ block content
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v11',
                 center: [-72.88, 45.62], // Long, Lat
-                zoom: 5,
-                minZoom: 3
+                zoom: 8
             });
-            var marker = new mapboxgl.Marker()
-                .setLngLat([12.550343, 55.665957])
-                .addTo(map);
+
             map.on('load', function () {
                 map.addSource('10m-bathymetry-81bsvj', {
                     type: 'vector',
@@ -45,6 +42,37 @@ block content
                         }
                     },
                     'land-structure-polygon'
+                );
+                map.loadImage(
+                    '/stylesheets/images/marker.png',
+                    function (error, image) {
+                        if (error) throw error;
+                        map.addImage('cat', image);
+                        map.addSource('point', {
+                            'type': 'geojson',
+                            'data': {
+                                'type': 'FeatureCollection',
+                                'features': [
+                                    {
+                                        'type': 'Feature',
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [-72.88, 45.62]
+                                        }
+                                    }
+                                ]
+                            }
+                        });
+                        map.addLayer({
+                            'id': 'points',
+                            'type': 'symbol',
+                            'source': 'point',
+                            'layout': {
+                                'icon-image': 'cat',
+                                'icon-size': 0.25
+                            }
+                        });
+                    }
                 );
             });
       .col-3.m-0.p-0#infoContainer

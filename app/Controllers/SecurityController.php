@@ -155,12 +155,12 @@ abstract class SecurityController extends ZephyrusBaseController
     private function applyContentSecurityPolicies()
     {
         $csp = new ContentSecurityPolicy();
-//        $csp->setDefaultSources(["'self'"]);
+        $csp->setDefaultSources(["'self'"]);
         $csp->setFontSources(["'self'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com']);
         $csp->setStyleSources(["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com']);
-//        $csp->setScriptSources(["'self'", 'https://ajax.googleapis.com', 'https://maps.googleapis.com',
-//            'https://www.google-analytics.com', 'http://connect.facebook.net', 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js']);
-//        $csp->setChildSources(["'self'", 'http://staticxx.facebook.com']);
+        $csp->setScriptSources(["'self'", 'https://ajax.googleapis.com', 'https://maps.googleapis.com',
+            'https://www.google-analytics.com', 'http://connect.facebook.net', 'https://api.mapbox.com', ContentSecurityPolicy::UNSAFE_INLINE]);
+        $csp->setChildSources(["'self'", 'http://staticxx.facebook.com', 'https://api.mapbox.com']);
         $csp->setImageSources(["'self'", 'data:']);
         $csp->setBaseUri([$this->request->getBaseUrl()]);
 
@@ -170,7 +170,7 @@ abstract class SecurityController extends ZephyrusBaseController
          * protection. These headers are sent automatically from the Zephyrus security controller this class inherits
          * from.
          */
-        parent::getSecureHeader()->setContentSecurityPolicy($csp);
+//        parent::getSecureHeader()->setContentSecurityPolicy($csp);
     }
 
     /**
