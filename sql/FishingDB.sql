@@ -32,6 +32,7 @@ create table Trip (
 create table Catch (
     id int auto_increment primary key,
     tripId int references Trip(id),
+    hotspotId int references Hotspot(id),
     temperature double,
     barometricPressure double,
     humidity double,
@@ -49,7 +50,7 @@ create table Winds (
 create table Fish (
     id int auto_increment primary key,
     catchId int references Catch(id),
-    species varchar(30),
+    species varchar(255),
     weight double
 );
 
@@ -69,8 +70,8 @@ alter table FishPicture
 
 create table Hotspot (
     id int auto_increment primary key,
-    userId int references User(id),
-    lastTimeUpdated datetime
+    lastTimeUpdated datetime,
+    isShared bool
 );
 
 create table Friend (
