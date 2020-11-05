@@ -47,7 +47,7 @@ block content
                     '/stylesheets/images/marker.png',
                     function (error, image) {
                         if (error) throw error;
-                        map.addImage('cat', image);
+                        map.addImage('custom-marker', image);
                         map.addSource('point', {
                             'type': 'geojson',
                             'data': {
@@ -59,18 +59,38 @@ block content
                                             'type': 'Point',
                                             'coordinates': [-72.88, 45.62]
                                         }
+                                    },
+                                    {
+                                        'type': 'Feature',
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [-75.88, 45.62]
+                                        }
+                                    },
+                                    {
+                                        'type': 'Feature',
+                                        'geometry': {
+                                            'type': 'Point',
+                                            'coordinates': [-72.88, 50.62]
+                                        }
                                     }
                                 ]
                             }
                         });
                         map.addLayer({
-                            'id': 'points',
+                            'id': 'symbols',
                             'type': 'symbol',
                             'source': 'point',
                             'layout': {
-                                'icon-image': 'cat',
+                                'icon-image': 'custom-marker',
                                 'icon-size': 0.25
                             }
+                        });
+                        map.on('click', 'symbols', function (e) {
+                            map.flyTo({
+                                center: e.features[0].geometry.coordinates
+                            });
+                            location.pathname= '/hub'
                         });
                     }
                 );
