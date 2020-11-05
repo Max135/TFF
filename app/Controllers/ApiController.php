@@ -1,5 +1,6 @@
 <?php namespace Controllers;
 
+use Models\Brokers\CatchBroker;
 use Models\Brokers\UserBroker;
 
 class ApiController extends Controller
@@ -8,12 +9,26 @@ class ApiController extends Controller
     public function initializeRoutes()
     {
         $this->get("/api", "apiGet");
+
         $this->post("/api", "apiPost");
+        $this->post("/api/catch", "apiPostCatch");
     }
 
     public function apiPost()
     {
 
+    }
+
+    public function apiPostCatch()
+    {
+        $tripId = $_POST['tripId'];
+        $temperature = $_POST['temperature'];
+        $pressure = $_POST['pressure'];
+        $humidity = $_POST['humidity'];
+        $time = $_POST['time'];
+        $lng = $_POST['longitude'];
+        $lat = $_POST['latitude'];
+        (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
     }
 
     public function apiGet()

@@ -40,6 +40,8 @@ create table Catch (
     coordinates point
 );
 
+create view CatchAlone as select coordinates from Catch where hotspotId is not null;
+
 create table Winds (
     id int auto_increment primary key,
     catchId int references Catch(id),
