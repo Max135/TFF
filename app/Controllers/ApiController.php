@@ -21,13 +21,13 @@ class ApiController extends Controller
 
     public function apiPostCatch()
     {
-        $tripId = $_POST['tripId'];
-        $temperature = $_POST['temperature'];
-        $pressure = $_POST['pressure'];
-        $humidity = $_POST['humidity'];
-        $time = $_POST['time'];
-        $lng = $_POST['longitude'];
-        $lat = $_POST['latitude'];
+        $tripId = $this->getPostValue('tripId');
+        $temperature = $this->getPostValue('temperature');
+        $pressure = $this->getPostValue('pressure');
+        $humidity = $this->getPostValue('humidity');
+        $time = $this->getPostValue('time');
+        $lng = $this->getPostValue('longitude');
+        $lat = $this->getPostValue('latitude');
         (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
     }
 
@@ -43,5 +43,14 @@ class ApiController extends Controller
             }
         }
         return $this->json('nil');
+    }
+
+    private function getPostValue(string $name)
+    {
+        if(isset($name)) {
+            return $_POST[$name];
+        }
+
+        return null;
     }
 }
