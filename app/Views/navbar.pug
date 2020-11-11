@@ -6,6 +6,8 @@ html
     link(href="stylesheets/main.css" rel="stylesheet")
     link(href="stylesheets/style.css" rel="stylesheet")
     meta(name="viewport" content="initial-scale=5,maximum-scale=1,user-scalable=no")
+    link(href="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.css" rel='stylesheet' type='text/stylesheet' nonce=nonce())
+    script(src="https://unpkg.com/bootstrap-table@1.18.0/dist/bootstrap-table.min.js" nonce=nonce())
     script(src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js' nonce=nonce())
     link(href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' type='text/stylesheet' nonce=nonce())
   header(style="z-index: 9999")
@@ -26,12 +28,12 @@ html
           a.nav-link(href='/options') Options
       ul.navbar-nav.nav-flex-icons
         li.nav-item
-          a.nav-link
+          a.nav-link(href="https://www.facebook.com/Three-Fisherman-Friends-112539337331633" target="_blank")
             i.fab.fa-facebook-f
         li.nav-item
           a.nav-link
             i.fab.fa-twitter
         li.nav-item
-          a.nav-link
+          a.nav-link(href="https://www.instagram.com/threefishermanfriends/" target="_blank")
             i.fab.fa-instagram
   block content

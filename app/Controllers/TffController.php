@@ -1,5 +1,7 @@
 <?php namespace Controllers;
 
+use Models\TableObject;
+use phpDocumentor\Reflection\Types\Array_;
 use Zephyrus\Application\Session;
 use Zephyrus\Network\Response;
 
@@ -40,8 +42,22 @@ class TffController extends Controller
     }
 
     public function showMap() {
+        $data = array();
+        $data["date"] = '01:01:02';
+        $data["startTime"] = '01:01:02';
+        $data["endTime"] = '04:01:02';
+        $data["pressure"] = '55';
         return $this->render("map", [
-            'title' => 'Map'
+            'title' => 'Map',
+            'table' => $this->buildProjectTable($data)
         ]);
+    }
+
+    private function buildProjectTable($data) {
+        return new TableObject([
+            "Date",
+            "Start Time",
+            "End Time",
+            "Pressure"], $data);
     }
 }

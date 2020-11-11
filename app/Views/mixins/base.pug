@@ -54,3 +54,28 @@ mixin ListMixins(list, href)
         !=list[0]
     else
       !=list
+
+mixin DataTableMixin(data, tableId)
+  if data
+    if is_array(data.data)
+      if count(data.data) > 0
+        table(id=tableId).display.table.dataTable.table-striped
+          thead.table-head
+            tr
+                each header in data.headers
+                  if (header === "meta")
+                    th(hidden="")=header
+                  else if (header === "id")
+                    th(hidden="")=header
+                  else
+                    th=header
+          tbody
+              each row in data.data
+                tr(data-href = '/')
+                  block
+      else
+        !=data[0]
+        p Il y a aucune données à afficher.
+    else
+      !=data
+      p Il y a aucune données à afficher.

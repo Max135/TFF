@@ -4,7 +4,7 @@
 body {
     color: white;
     background-color: #2C2F33;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .wrapper.style3Alt {
@@ -233,4 +233,23 @@ body {
 
 .hotspotIcon {
     font-size: 2rem;
+}
+
+.hotspotItem {
+    background-color: #2C2F33;
+    color: white;
+    border-color: #cce5ff;
+}
+
+.windIcon {
+    font-size: 5rem;
+    color: #cce5ff;
+}
+
+#windIndicator {
+    margin-top: 1rem;
+}
+
+#windIndicator {
+
 }
