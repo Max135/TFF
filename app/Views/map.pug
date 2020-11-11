@@ -118,45 +118,35 @@ block content
             span="75"
 
         br
+        br
         .row.justify-content-center.m-2
           table(data-toggle='table' data-search='true' data-show-columns='true' data-pagination="true"
             data-side-pagination="server" data-page-list="[10, 25, 50, 100, 200, All]")
             thead
               tr.tr-class-1
-                th(data-field='name' rowspan='2' data-valign='middle') Name
-                th(data-field='star') Stars
-                th(data-field='forks') Forks
+                th(data-field='name' rowspan='2' data-valign='middle').grayColor Date
+                th(data-field='star').text-right.grayColor Pressure
             tbody
               tr#tr-id-1.tr-class-1
-                td#td-id-1.td-class-1
-                  a(href='https://github.com/wenzhixin/bootstrap-table' target='_blank') bootstrap-table
-                td 8827
-                td 3603
+                td#td-id-1.td-class-1 10 Novembre 2010
+                td.text-right 8827
               tr#tr-id-2.tr-class-2
-                td#td-id-2.td-class-2
-                  a(href='https://github.com/wenzhixin/multiple-select' target='_blank') multiple-select
-                td 1615
-                td 623
+                td#td-id-2.td-class-1 10 Novembre 2010
+                td.text-right 1615
               tr#tr-id-3.tr-class-3
-                td#td-id-3.td-class-3
-                  a(href='https://github.com/wenzhixin/bootstrap-show-password' target='_blank') bootstrap-show-password
-                td 220
-                td 85
+                td#td-id-3.td-class-1 10 Novembre 2010
+                td.text-right 220
               tr#tr-id-4.tr-class-4
-                td#td-id-4.td-class-4
-                  a(href='https://github.com/wenzhixin/bootstrap-table-examples' target='_blank') bootstrap-table-examples
-                td 1734
-                td 1532
+                td#td-id-4.td-class-1 10 Novembre 2010
+                td.text-right 1734
               tr#tr-id-5.tr-class-5
-                td#td-id-5.td-class-5
-                  a(href='https://github.com/wenzhixin/scutech-redmine' target='_blank') scutech-redmine
-                td 24
-                td 18
+                td#td-id-5.td-class-1 10 Novembre 2010
+                td.text-right 24
         br
 
         .row.justify-content-center
           .justify-content-center.text-center
-            a(href="#")
+            a(href="/winds")
               i.fas.fa-wind.windIcon
               br
             span#windIndicator="55 mph"

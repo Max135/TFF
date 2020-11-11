@@ -233,6 +233,7 @@ body {
 
 .hotspotIcon {
     font-size: 2rem;
+    color: #cce5ff
 }
 
 .hotspotItem {
@@ -244,12 +245,17 @@ body {
 .windIcon {
     font-size: 5rem;
     color: #cce5ff;
+    transition: 0.3s;
+}
+
+.windIcon:hover {
+    color: white;
 }
 
 #windIndicator {
     margin-top: 1rem;
 }
 
-#windIndicator {
-
+.grayColor {
+    color: gray;
 }

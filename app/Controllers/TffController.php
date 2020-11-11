@@ -10,11 +10,12 @@ class TffController extends Controller
 
     public function initializeRoutes()
     {
-        $this->get("/map", "showMap");
+        $this->get("/map", "renderMap");
         $this->get('/test', 'renderTest');
         $this->get('/hub', 'renderHub');
         $this->get('/friends', 'renderAcquaintances');
         $this->get('/options', 'renderHub');
+        $this->get('/winds', 'renderWindsPage');
     }
 
 //    public function before(): ?Response
@@ -41,7 +42,7 @@ class TffController extends Controller
         return $this->render('navbar');
     }
 
-    public function showMap() {
+    public function renderMap() {
         $data = array();
         $data["date"] = '01:01:02';
         $data["startTime"] = '01:01:02';
@@ -51,6 +52,10 @@ class TffController extends Controller
             'title' => 'Map',
             'table' => $this->buildProjectTable($data)
         ]);
+    }
+
+    public function renderWindsPage() {
+
     }
 
     private function buildProjectTable($data) {
