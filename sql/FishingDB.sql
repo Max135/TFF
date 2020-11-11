@@ -32,7 +32,6 @@ create table Trip (
 create table Catch (
     id int auto_increment primary key,
     tripId int references Trip(id),
-    hotspotId int references Hotspot(id),
     temperature double,
     barometricPressure double,
     humidity double,
@@ -40,7 +39,7 @@ create table Catch (
     coordinates point
 );
 
-create view CatchAlone as select coordinates from Catch where hotspotId is not null;
+create view CatchAlone as select coordinates from Catch join Trip T on T.id = Catch.tripId join User U on U.id = T.userId right join Hotspot H on U.id = H.userId where U.id is null is not null;
 
 create table Winds (
     id int auto_increment primary key,
@@ -72,6 +71,7 @@ alter table FishPicture
 
 create table Hotspot (
     id int auto_increment primary key,
+    userId int references User(id),
     lastTimeUpdated datetime,
     isShared bool
 );
@@ -84,6 +84,3 @@ create table Friend (
 alter table Friend
     add constraint pk_Friend primary key (userOne, userTwo);
 
-
-# Password = Omega123
-insert into User values (default, "qwe@qwe.qwe", "$2y$10$.PWFhre43nG7h88stW/.PelsIe09hwLROWIkkij4o8NgDYZtP6/c.", "qwe", null);
