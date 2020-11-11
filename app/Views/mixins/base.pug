@@ -35,3 +35,22 @@ mixin form(method, action)
     if notStandard
       input(type="hidden", name="__method", value=method)
     block
+
+mixin ListMixins(list, href)
+  if list
+    if is_array(list)
+      if count(list) > 1
+        #list-tab.list-group(role='tablist')
+            each item in list
+              if (item.Href === href)
+                .div#selectedDiv
+                  a#selectedItem.list-group-item.list-group-item-action.list-menu( href=item.Href role='tab')= item.Name
+                    i.fas.fa-angle-right.fa-lg.right-icon.d-inline
+              else
+                .div
+                  a.list-group-item.list-group-item-action.list-menu(href=item.Href role='tab')= item.Name
+                    i.fas.fa-angle-right.fa-lg.right-icon.d-inline
+      else
+        !=list[0]
+    else
+      !=list
