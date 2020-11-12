@@ -55,7 +55,7 @@ class TffController extends Controller
     }
 
     public function renderWindsPage() {
-
+        return $this->render('wind');
     }
 
     private function buildProjectTable($data) {
