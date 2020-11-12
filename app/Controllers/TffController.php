@@ -1,5 +1,6 @@
 <?php namespace Controllers;
 
+use Models\Brokers\HotspotBroker;
 use Models\TableObject;
 use phpDocumentor\Reflection\Types\Array_;
 use Zephyrus\Application\Session;
@@ -43,14 +44,9 @@ class TffController extends Controller
     }
 
     public function renderMap() {
-        $data = array();
-        $data["date"] = '01:01:02';
-        $data["startTime"] = '01:01:02';
-        $data["endTime"] = '04:01:02';
-        $data["pressure"] = '55';
+        $hotspots = (new HotspotBroker())->getUsersHotspots(Session::getInstance()->read('id'));
         return $this->render("map", [
             'title' => 'Map',
-            'table' => $this->buildProjectTable($data)
         ]);
     }
 

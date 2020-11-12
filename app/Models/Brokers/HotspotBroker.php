@@ -35,6 +35,10 @@ class HotspotBroker extends Broker
         }
     }
 
+    public function getUsersHotspots($userId) {
+
+    }
+
     private function getCatchCoordinates($catchId)
     {
         $sql = "select X(C.coordinates) as lat, Y(C.coordinates) as lon from Catch C where id = ?;";

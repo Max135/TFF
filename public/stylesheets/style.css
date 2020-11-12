@@ -13,7 +13,7 @@ body {
     padding: 12px;
     margin-bottom: 32px;
     color: whitesmoke;
-    display: block;
+    max-width: 80%;
 }
 
 .wrapper.style3Alt {
@@ -218,7 +218,7 @@ body {
 }
 
 #page-container {
-    padding-top: 60px;
+    padding-top: 80px;
 }
 
 /* HOTSPOT INFO */
