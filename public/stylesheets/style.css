@@ -271,14 +271,13 @@ body {
 
 /* WIND CHART */
 #container {
-    /*min-height: 500px;*/
-    /*height: 600px;*/
+    min-height: 500px;
+    height: 600px;
+    width: 100%;
 }
 
 .highcharts-figure, .highcharts-data-table table {
     min-width: 310px;
-    min-height: 500px;
-    height: 600px;
     width: 90%;
     margin: 1em auto;
 }
@@ -291,7 +290,6 @@ body {
     text-align: center;
     width: 100%;
     max-width: 500px;
-    height: 600px;
 }
 
 .highcharts-data-table caption {
