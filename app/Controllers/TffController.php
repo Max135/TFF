@@ -44,9 +44,12 @@ class TffController extends Controller
     }
 
     public function renderMap() {
-        $hotspots = (new HotspotBroker())->getUsersHotspots(Session::getInstance()->read('id'));
+        $hotspots = (new HotspotBroker())->getHotspots(Session::getInstance()->read('id'));
+//        var_dump($hotspots);
+//        exit;
         return $this->render("map", [
             'title' => 'Map',
+            'hotspots' => $this->json($hotspots)
         ]);
     }
 

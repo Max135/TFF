@@ -20,7 +20,6 @@ insert into Catch values (default, 1, 1, 1, 1, 1, date('2008-11-11 11:13:11'), p
 insert into Winds values (default, 3, 2, 'W');
 insert into Fish values (default, 3, 'Trout', 20);
 
-
 insert into Trip values (default, 1, 1, 1, 1, date('2008-10-29 14:56:59'), date('2008-11-11 11:12:01'));
 
 insert into Catch values (default, 2, null, 1, 1, 1, date('2008-11-11 11:12:01'), point(45.000000, -75.000000));

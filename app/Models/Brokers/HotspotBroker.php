@@ -52,7 +52,7 @@ class HotspotBroker extends Broker
         return $this->selectSingle($sql, [$catchId]);
     }
 
-    private function getHotspots($userId)
+    public function getHotspots($userId)
     {
         $sql = "select id, X(coordinates) as lat, Y(coordinates) as lon from Hotspot where userId = ?;";
         return $this->select($sql, [$userId]);
