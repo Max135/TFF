@@ -1,6 +1,7 @@
 <?php namespace Controllers;
 
 use Models\Brokers\CatchBroker;
+use Models\Brokers\HotspotBroker;
 use Models\Brokers\UserBroker;
 
 class ApiController extends Controller
@@ -8,34 +9,41 @@ class ApiController extends Controller
 
     public function initializeRoutes()
     {
-        $this->get("/api", "apiGet");
 
-        $this->post("/api", "apiPost");
+        $this->post("/api/authenticate", "apiPostAuthenticate");
         $this->post("/api/catch", "apiPostCatch");
-    }
-
-    public function apiPost()
-    {
-
+        $this->post("/api/catches", "apiPostCatches");
     }
 
     public function apiPostCatch()
     {
         $tripId = $this->getPostValue('tripId');
+        $userId = $this->getPostValue('userId');
         $temperature = $this->getPostValue('temperature');
         $pressure = $this->getPostValue('pressure');
         $humidity = $this->getPostValue('humidity');
         $time = $this->getPostValue('time');
         $lng = $this->getPostValue('longitude');
         $lat = $this->getPostValue('latitude');
-        (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
+
+        $catchId = (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
+        (new HotspotBroker())->createNewHotspot($catchId, $userId);
     }
 
-    public function apiGet()
+    public function apiPostCatches()
     {
-        if (isset($_GET['email']) && isset($_GET['password'])) {
-            $email = $_GET['email'];
-            $password = $_GET['password'];
+        $catches = $_POST['catches'];
+        foreach ($catches as $catch) {
+            $catchId = (new CatchBroker())->insert($catch->tripId, $catch->temperature, $catch->pressure, $catch->humidity, $catch->time, $catch->lng, $catch->lat);
+            (new HotspotBroker())->createNewHotspot($catchId, $catch->userId);
+        }
+    }
+
+    public function apoPostAuthenticate()
+    {
+        if (isset($_POST['email']) && isset($_POST['password'])) {
+            $email = $_POST['email'];
+            $password = $_POST['password'];
             $broker = new UserBroker();
 
             if ($broker->validCredentials($email, $password)) {
@@ -47,7 +55,7 @@ class ApiController extends Controller
 
     private function getPostValue(string $name)
     {
-        if(isset($name)) {
+        if (isset($name)) {
             return $_POST[$name];
         }
 

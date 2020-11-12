@@ -9,9 +9,10 @@ class CatchBroker extends Broker
 
     //https://webmasters.stackexchange.com/questions/76607/browser-shows-ip-address-instead-of-my-domain-name-when-using-google-cloud
 
-    public function insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat, $hotspotId = null)
+    public function insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat, $hotspotId = null): int
     {
         $sql = "insert into Catch values (default, ?, ?, ?, ?, ?, ?, point(?, ?));";
         $this->query($sql, [$tripId, $hotspotId, $temperature, $pressure, $humidity, $time, $lng, $lat]);
+        return $this->getDatabase()->getLastInsertedId();
     }
 }
