@@ -6,6 +6,7 @@ class HotspotBroker extends Broker
     private const HOTSPOT_RADIUS = 200;
     private const EARTH_RADIUS_KM = 6378.137;
 
+    //hrtime(true); to get execution time in nanoseconds
 
     //http://mathforum.org/library/drmath/view/61135.html
     //https://stackoverflow.com/questions/2839533/adding-distance-to-a-gps-coordinate
@@ -17,30 +18,42 @@ class HotspotBroker extends Broker
     //46.055749, -72.825956
     public function createNewHotspot($lastCatchId, $userId)
     {
-        $this->getCatchCoordinates($userId);
+        $currentCoordinates = $this->getCatchCoordinates($lastCatchId);
+        foreach ($this->getHotspots($userId) as $hotspot) {
+            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $hotspot->lat, $hotspot->lon)) {
+                $sql = "update Catch set hotspotId = ? where id = ?;";
+                $this->query($sql, [$hotspot->id, $lastCatchId]);
+                return;
+            }
+        }
 
-        $before = hrtime(true);
-        echo "<p>Instant Call ".(hrtime(true)-$before)."</p>";
-        echo $this->measureAccurately(46.057216, -72.824669, 46.055749, -72.825956) < self::HOTSPOT_RADIUS ? "true" : "false";
-        echo "<p>Execution time: ".(hrtime(true)-$before)."</p>";
-        exit;
+        //TODO: Confirm what to do here (Check all other coordinates...)
+        foreach ($this->getCatchAloneView() as $catch) {
+            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $catch->lat, $catch->lon)) {
+
+            }
+        }
     }
 
-    private function getCatchCoordinates($userId)
+    private function getCatchCoordinates($catchId)
     {
-        $sql = "select C.coordinates, C.id from Catch C join Trip T on C.tripId = T.id join User U on T.userId = U.id where U.id = ?;";
-        $result = $this->select($sql, [$userId]);
-        var_dump($result);exit;
-        return $result;
+        $sql = "select X(C.coordinates) as lat, Y(C.coordinates) as lon from Catch C where id = ?;";
+        return $this->selectSingle($sql, [$catchId]);
     }
 
-    private function isPointInsideRadius($x1, $y1, $x2, $y2)
+    private function getHotspots($userId)
     {
-//        echo "<p>".pow(self::HOTSPOT_RADIUS, 2)." > ".pow($x1 - $x2, 2)." + ".pow($y1 - $y2, 2)."</p>";
-//        echo "<p>".(pow($x1 - $x2, 2) + pow($y1 - $y2, 2))."</p>";
-        return pow(self::HOTSPOT_RADIUS, 2) >= (pow($x1 - $x2, 2) + pow($y1 - $y2, 2));
+        $sql = "select id, X(coordinates) as lat, Y(coordinates) as lon from Hotspot where userId = ?;";
+        return $this->select($sql, [$userId]);
     }
 
+    private function getCatchAloneView()
+    {
+        $sql = "select * from CatchAlone;";
+        return $this->select($sql);
+    }
+
+    //Haversine formula
     private function measureAccurately($lat1, $lon1, $lat2, $lon2)
     {
         $distanceLat = ($lat2 * (pi()/180)) - ($lat1 * (pi()/180));
@@ -63,5 +76,12 @@ class HotspotBroker extends Broker
     private function sine($value)
     {
         return sin($value/2);
+    }
+
+    private function isPointInsideRadius($x1, $y1, $x2, $y2)
+    {
+//        echo "<p>".pow(self::HOTSPOT_RADIUS, 2)." > ".pow($x1 - $x2, 2)." + ".pow($y1 - $y2, 2)."</p>";
+//        echo "<p>".(pow($x1 - $x2, 2) + pow($y1 - $y2, 2))."</p>";
+        return pow(self::HOTSPOT_RADIUS, 2) >= (pow($x1 - $x2, 2) + pow($y1 - $y2, 2));
     }
 }

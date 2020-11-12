@@ -11,6 +11,8 @@ drop table if exists Catch;
 drop table if exists Trip;
 drop table if exists User;
 
+drop view if exists CatchAlone;
+
 create table User (
     id int auto_increment primary key,
     email varchar(255) unique,
@@ -32,14 +34,13 @@ create table Trip (
 create table Catch (
     id int auto_increment primary key,
     tripId int references Trip(id),
+    hotspotId int references Hotspot(id),
     temperature double,
     barometricPressure double,
     humidity double,
     time timestamp,
     coordinates point
 );
-
-create view CatchAlone as select coordinates from Catch join Trip T on T.id = Catch.tripId join User U on U.id = T.userId right join Hotspot H on U.id = H.userId where U.id is null is not null;
 
 create table Winds (
     id int auto_increment primary key,
@@ -73,7 +74,8 @@ create table Hotspot (
     id int auto_increment primary key,
     userId int references User(id),
     lastTimeUpdated datetime,
-    isShared bool
+    isShared bool,
+    coordinates point
 );
 
 create table Friend (
@@ -83,4 +85,6 @@ create table Friend (
 
 alter table Friend
     add constraint pk_Friend primary key (userOne, userTwo);
+
+create view CatchAlone as select C.id, X(C.coordinates) as lat, Y(C.coordinates) as lon from Catch C left outer join Hotspot H on H.id = C.hotspotId where C.hotspotId IS NULL;
 
