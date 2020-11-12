@@ -19,24 +19,31 @@ class HotspotBroker extends Broker
     public function createNewHotspot($lastCatchId, $userId)
     {
         $currentCoordinates = $this->getCatchCoordinates($lastCatchId);
-        foreach ($this->getHotspots($userId) as $hotspot) {
-            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $hotspot->lat, $hotspot->lon)) {
-                $sql = "update Catch set hotspotId = ? where id = ?;";
-                $this->query($sql, [$hotspot->id, $lastCatchId]);
-                return;
-            }
+        $isInHotspot = $this->insertCatchToExistingHotspot($lastCatchId, $userId, $currentCoordinates);
+        if($isInHotspot){
+            return;
         }
 
-        //TODO: Confirm what to do here (Check all other coordinates...)
-        foreach ($this->getCatchAloneView() as $catch) {
-            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $catch->lat, $catch->lon)) {
+        $closeCatches = $this->getCatchesInProximity($currentCoordinates);
 
-            }
-        }
+        $this->createHotspot($closeCatches, $userId, $currentCoordinates);
     }
 
     public function getUsersHotspots($userId) {
 
+    }
+
+    private function addCatchToHotspot($hotspotId, $catch)
+    {
+        $sql = "update Catch set hotspotId = ? where id = ?";
+        $this->query($sql, [$hotspotId, $catch->id]);
+    }
+
+    private function insertNewHotspot($userId, $currentCoordinates): int
+    {
+        $sql = "insert into Hotspot values (default, ?, now(), false, point(?, ?));";
+        $this->query($sql, [$userId, $currentCoordinates->lat, $currentCoordinates->lon]);
+        return $this->getDatabase()->getLastInsertedId();
     }
 
     private function getCatchCoordinates($catchId)
@@ -55,6 +62,47 @@ class HotspotBroker extends Broker
     {
         $sql = "select * from CatchAlone;";
         return $this->select($sql);
+    }
+
+    /**
+     * If catch is in a hotspot, add it to the hotspot and return true else just return false
+     *
+     * @param $lastCatchId
+     * @param $userId
+     * @param $currentCoordinates
+     * @return bool
+     */
+    private function insertCatchToExistingHotspot($lastCatchId, $userId, $currentCoordinates): bool
+    {
+        foreach ($this->getHotspots($userId) as $hotspot) {
+            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $hotspot->lat, $hotspot->lon)) {
+                $this->addCatchToHotspot($hotspot->id, $lastCatchId);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private function getCatchesInProximity($currentCoordinates)
+    {
+        $closeCatches = array();
+        foreach ($this->getCatchAloneView() as $catch) {
+            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $catch->lat, $catch->lon)) {
+                $closeCatches[] = $catch;
+            }
+        }
+
+        return $closeCatches;
+    }
+
+    private function createHotspot($closeCatches, $userId, $currentCoordinates)
+    {
+        if(count($closeCatches) >= 2) {
+            $hotspotId = $this->insertNewHotspot($userId, $currentCoordinates);
+            foreach ($closeCatches as $closeCatch) {
+                $this->addCatchToHotspot($hotspotId, $closeCatch->id);
+            }
+        }
     }
 
     //Haversine formula
