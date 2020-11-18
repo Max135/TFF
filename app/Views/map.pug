@@ -1,115 +1,107 @@
 extends navbar
 
 block content
-
   body
     .row
-      .col-9.m-0.p-0#mapContainer
-        div#map
-        script(nonce=nonce()).
-            var hotspotFromPug = #{hotspots};
-            mapboxgl.accessToken = 'pk.eyJ1Ijoid29vbnRvcG9saXMiLCJhIjoiY2tnYXoxMGVkMDgzMjJ2bTVqeTRrY2FuaiJ9.hg2PeuwIn4SPCMEFLt7mbw';
-            var map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v11',
-                center: [-72.88, 45.62], // Long, Lat
-                zoom: 8
-            });
+      .m-0.p-0#mapContainer(class=mapWidth)
+      div#map
+      script(nonce=nonce()).
+          var userId = #{userId};
+          var centerCoord = #{center};
+          var req = new XMLHttpRequest();
+          req.onreadystatechange = function () {
+              if (req.readyState == 4 && req.status == 200) {
+                  mapboxgl.accessToken = 'pk.eyJ1Ijoid29vbnRvcG9saXMiLCJhIjoiY2tnYXoxMGVkMDgzMjJ2bTVqeTRrY2FuaiJ9.hg2PeuwIn4SPCMEFLt7mbw';
+                  var map = new mapboxgl.Map({
+                      container: 'map',
+                      style: 'mapbox://styles/mapbox/streets-v11',
+                      center: centerCoord, // Long, Lat
+                      zoom: 8
+                  });
 
-            map.on('load', function () {
-                map.addSource('10m-bathymetry-81bsvj', {
-                    type: 'vector',
-                    url: 'mapbox://mapbox.9tm8dx88'
-                });
-                map.addLayer(
-                    {
-                        'id': '10m-bathymetry-81bsvj',
-                        'type': 'fill',
-                        'source': '10m-bathymetry-81bsvj',
-                        'source-layer': '10m-bathymetry-81bsvj',
-                        'layout': {},
-                        'paint': {
-                            'fill-outline-color': 'hsla(337, 82%, 62%, 0)',
-                            // cubic bezier is a four point curve for smooth and precise styling
-                            // adjust the points to change the rate and intensity of interpolation
-                            'fill-color': [
-                                'interpolate',
-                                ['cubic-bezier', 0, 0.5, 1, 0.5],
-                                ['get', 'DEPTH'],
-                                200,
-                                '#78bced',
-                                9000,
-                                '#15659f'
-                            ]
-                        }
-                    },
-                    'land-structure-polygon'
-                );
-                map.loadImage(
-                    '/stylesheets/images/marker.png',
-                    function (error, image) {
-                        if (error) throw error;
-                        var hotspotsInfo = JSON.parse(hotspotFromPug);
-                        var hotspots = Object.keys(hotspotsInfo);
-                        var hotspotsArray = hotspots.forEach(createHotspots)
-                        map.addImage('custom-marker', image);
-                        map.addSource('point', {
-                            'type': 'geojson',
-                            'data': {
-                                'type': 'FeatureCollection',
-                                'features': [
-                                    {
-                                        'type': 'Feature',
-                                        'geometry': {
-                                            'type': 'Point',
-                                            'coordinates': [-72.88, 45.62]
-                                        }
-                                    },
-                                    {
-                                        'type': 'Feature',
-                                        'geometry': {
-                                            'type': 'Point',
-                                            'coordinates': [-75.88, 45.62]
-                                        }
-                                    },
-                                    {
-                                        'type': 'Feature',
-                                        'geometry': {
-                                            'type': 'Point',
-                                            'coordinates': [-72.88, 50.62]
-                                        }
-                                    }
-                                ]
-                            }
-                        });
-                        map.addLayer({
-                            'id': 'symbols',
-                            'type': 'symbol',
-                            'source': 'point',
-                            'layout': {
-                                'icon-image': 'custom-marker',
-                                'icon-size': 0.25
-                            }
-                        });
-                        map.on('click', 'symbols', function (e) {
-                            map.flyTo({
-                                center: e.features[0].geometry.coordinates
-                            });
-                            location.pathname= '/hub'
-                        });
+                  map.on('load', function () {
+                      map.addSource('10m-bathymetry-81bsvj', {
+                          type: 'vector',
+                          url: 'mapbox://mapbox.9tm8dx88'
+                      });
+                      map.addLayer(
+                          {
+                              'id': '10m-bathymetry-81bsvj',
+                              'type': 'fill',
+                              'source': '10m-bathymetry-81bsvj',
+                              'source-layer': '10m-bathymetry-81bsvj',
+                              'layout': {},
+                              'paint': {
+                                  'fill-outline-color': 'hsla(337, 82%, 62%, 0)',
+                                  // cubic bezier is a four point curve for smooth and precise styling
+                                  // adjust the points to change the rate and intensity of interpolation
+                                  'fill-color': [
+                                      'interpolate',
+                                      ['cubic-bezier', 0, 0.5, 1, 0.5],
+                                      ['get', 'DEPTH'],
+                                      200,
+                                      '#78bced',
+                                      9000,
+                                      '#15659f'
+                                  ]
+                              }
+                          },
+                          'land-structure-polygon'
+                      );
+                      var hotspotsInfo = JSON.parse(req.response);
+                      var hotspotsArray = [];
+                      for (var hotspot of hotspotsInfo) {
+                          hotspotsArray.push(createHotspot(hotspot))
+                      }
+                      map.loadImage(
+                          '/stylesheets/images/marker.png',
+                          function (error, image) {
+                              if (error) throw error;
+                              map.addImage('custom-marker', image);
+                              map.addSource('point', {
+                                  'type': 'geojson',
+                                  'data': {
+                                      'type': 'FeatureCollection',
+                                      'features': hotspotsArray
+                                  }
+                              });
+                              map.addLayer({
+                                  'id': 'symbols',
+                                  'type': 'symbol',
+                                  'source': 'point',
+                                  'layout': {
+                                      'icon-image': 'custom-marker',
+                                      'icon-size': 0.25
+                                  }
+                              });
+                              map.on('click', 'symbols', function (e) {
+                                  map.flyTo({
+                                      center: e.features[0].geometry.coordinates
+                                  });
+                                  var uri = "/mapOn/" + e.features[0].geometry.coordinates;
+                                  var enc = encodeURI(uri);
+                                  var dec = decodeURI(enc);
+                                  location.pathname = dec;
+                              });
+                          }
+                      );
+              })
+          }
+            function createHotspot(item) {
+                  console.log("item".concat(item))
+                var hotspot = {
+                    type : 'Feature',
+                    geometry: {
+                        type: 'Point',
+                        coordinates: [item.lon, item.lat]
                     }
-                );
-                // function createHotspots(item) {
-                //     var hsotspot = {
-                //         type : 'Feature',
-                //         geometry: {
-                //             type: 'Point',
-                //             coordinates: [item.long, item.lat]
-                //         }
-                //     }
-                //     console.log(hotspot);
-                // }
-            });
+                }
+                return hotspot;
+            }
+          }
+          var url = location.protocol + "//" + location.hostname + "/api/hotspots?userId=" + userId;
+          req.open("GET", url, true);
+          req.send();
 
       .col-3.m-0.p-0#infoContainer
         .row.w-100.justify-content-center

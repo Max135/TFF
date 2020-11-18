@@ -12,6 +12,7 @@ class TffController extends Controller
     public function initializeRoutes()
     {
         $this->get("/map", "renderMap");
+        $this->get('/mapOn/{id}', "renderMapOnHotspot");
         $this->get('/test', 'renderTest');
         $this->get('/hub', 'renderHub');
         $this->get('/friends', 'renderAcquaintances');
@@ -44,12 +45,21 @@ class TffController extends Controller
     }
 
     public function renderMap() {
-        $hotspots = (new HotspotBroker())->getHotspots(Session::getInstance()->read('id'));
-//        var_dump($hotspots);
-//        exit;
         return $this->render("map", [
             'title' => 'Map',
-            'hotspots' => $this->json($hotspots)
+            'userId' => Session::getInstance()->read('id'),
+            'mapWidth' => "col-12",
+            'center' => [-72.88, 45.62]
+        ]);
+    }
+
+    public function renderMapOnHotspot($coords) {
+        $splitted = explode(",", $coords);
+        return $this->render("map", [
+            'title' => 'Map',
+            'userId' => Session::getInstance()->read('id'),
+            'mapWidth' => "col-9",
+            'center' => [floatval($splitted[0]), floatval($splitted[1])]
         ]);
     }
 

@@ -9,7 +9,8 @@
     }
   ],
   "require": {
-    "zephyrus/zephyrus": "1.1.*"
+    "zephyrus/zephyrus": "1.1.*",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "5.5.*",

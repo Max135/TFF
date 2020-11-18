@@ -13,6 +13,7 @@ class ApiController extends Controller
         $this->post("/api/authenticate", "apiPostAuthenticate");
         $this->post("/api/catch", "apiPostCatch");
         $this->post("/api/catches", "apiPostCatches");
+        $this->get('/api/hotspots', 'getUsersHotspots');
     }
 
     public function apiPostCatch()
@@ -28,6 +29,12 @@ class ApiController extends Controller
 
         $catchId = (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
         (new HotspotBroker())->createNewHotspot($catchId, $userId);
+    }
+
+    public function getUsersHotspots() {
+        $userId = $_GET['userId'];
+        $result = (new HotspotBroker())->getHotspots($userId);
+        return $this->json($result);
     }
 
     public function apiPostCatches()
