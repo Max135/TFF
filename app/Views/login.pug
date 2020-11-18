@@ -19,12 +19,12 @@ html
       +form("post", "/login")
         .form-group
           .form-label-group.formField
-            input(id="id_email" type="text" name="email" class="form-control login-form-border" value="qwe@qwe.qwe" placeholder="email" style="padding-left:33px;")
+            input(id="id_email" type="text" name="email" class="form-control login-form-border" value="qwe@qwe.qwe" placeholder="email" style="padding-left:33px;").formField
           br
           .form-label-group.formField
-            input(id="id_password" type="password" name="password" class="form-control login-form-border" value="Omega123" placeholder="password" style="padding-left:33px;")
+            input(id="id_password" type="password" name="password" class="form-control login-form-border" value="Omega123" placeholder="password" style="padding-left:33px;").formField
           br
           .form-inline.justify-content-between
             a.signupLink.p-2(href="/signup") Signup
-            button.btn.btn-sm.form-button.text-uppercase Login
+            button.btn.btn-lg.form-button.text-uppercase Login
 

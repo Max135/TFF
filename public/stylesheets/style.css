@@ -96,10 +96,10 @@ body {
     height: 100%;
     opacity: 0.4;
     background: rgb(255,145,164);
-    background: -moz-linear-gradient(bottom,rgba(255,145,164,1) 0%, rgba(255,255,255,1) 100%);
-    background: -webkit-linear-gradient(bottom,rgba(255,145,164,1) 0%, rgba(255,255,255,1) 100%);
-    background: linear-gradient(bottom,rgba(255,145,164,1) 0%, rgba(255,255,255,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff91a4",endColorstr="#ffffff",GradientType=1);
+    background: -moz-linear-gradient(0deg, rgba(255,145,164,1) 0%, rgba(125,71,80,1) 30%, rgba(0,0,0,1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(255,145,164,1) 0%, rgba(125,71,80,1) 30%, rgba(0,0,0,1) 100%);
+    background: linear-gradient(0deg, rgba(255,145,164,1) 0%, rgba(125,71,80,1) 30%, rgba(0,0,0,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ff91a4",endColorstr="#000000",GradientType=1);
 }
 
 .loginVideo {
@@ -157,17 +157,18 @@ body {
     font-weight: lighter;
     border-radius: 5px;
     width: auto;
-    background: #57BD75;
+    background: pink;
     color: black;
     height: 36px;
 }
 
 .form-button:hover {
-    background-color: #1c7430;
+    background-color: hotpink;
+    transition: 0.3s;
 }
 
 .form-text {
-    color: #ffffff;
+    color: whitesmoke;
 }
 
 .loginTitle {
@@ -176,23 +177,29 @@ body {
     letter-spacing: 2px;
     text-align: center;
     margin-bottom: 36px;
-    color: white;
+    color: pink;
     opacity: 0.8;
 }
 
 .formField {
-    background-color: white;
+    background-color: black;
+}
+
+.formField:focus {
+    background-color: black;
+    color: whitesmoke;
 }
 
 .signupLink {
-    color: black;
+    color: pink;
     text-decoration: none;
     font-size: 0.8rem;
+    transition: 0.3s;
 }
 
 .signupLink:hover {
     text-decoration: none;
-    color: #1d2124;
+    color: hotpink;
 }
 
 /* MAP */
