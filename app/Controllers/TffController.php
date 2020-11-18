@@ -12,7 +12,7 @@ class TffController extends Controller
     public function initializeRoutes()
     {
         $this->get("/map", "renderMap");
-        $this->get('/mapOn/{id}', "renderMapOnHotspot");
+        $this->get('/mapOn/{coords}/{hotspotId}', "renderMapOnHotspot");
         $this->get('/test', 'renderTest');
         $this->get('/hub', 'renderHub');
         $this->get('/friends', 'renderAcquaintances');
@@ -53,8 +53,9 @@ class TffController extends Controller
         ]);
     }
 
-    public function renderMapOnHotspot($coords) {
+    public function renderMapOnHotspot($coords, $hotspotId) {
         $splitted = explode(",", $coords);
+
         return $this->render("map", [
             'title' => 'Map',
             'userId' => Session::getInstance()->read('id'),

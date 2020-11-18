@@ -50,6 +50,7 @@ block content
                       );
                       var hotspotsInfo = JSON.parse(req.response);
                       var hotspotsArray = [];
+                      console.log(hotspotsInfo);
                       for (var hotspot of hotspotsInfo) {
                           hotspotsArray.push(createHotspot(hotspot))
                       }
@@ -62,7 +63,7 @@ block content
                                   'type': 'geojson',
                                   'data': {
                                       'type': 'FeatureCollection',
-                                      'features': hotspotsArray
+                                      'features': hotspotsArray,
                                   }
                               });
                               map.addLayer({
@@ -78,7 +79,8 @@ block content
                                   map.flyTo({
                                       center: e.features[0].geometry.coordinates
                                   });
-                                  var uri = "/mapOn/" + e.features[0].geometry.coordinates;
+                                  var hotspotId = getHotspotId(e.features[0].geometry.coordinates, hotspotsInfo);
+                                  var uri = "/mapOn/" + e.features[0].geometry.coordinates + "/" + hotspotId;
                                   var enc = encodeURI(uri);
                                   var dec = decodeURI(enc);
                                   location.pathname = dec;
@@ -88,7 +90,6 @@ block content
               })
           }
             function createHotspot(item) {
-                  console.log("item".concat(item))
                 var hotspot = {
                     type : 'Feature',
                     geometry: {
@@ -97,6 +98,25 @@ block content
                     }
                 }
                 return hotspot;
+            }
+
+            function getHotspotId(coords, hotpotsInfo) {
+                var long = coords[0].toString();
+                console.log(typeof(long));
+                long = long.substring(0, long.indexOf(".") + 4)
+                var lat = coords[1].toString();
+                lat = lat.substring(0, lat.indexOf(".") + 4)
+                alert(long);
+                alert(lat);
+                for (var hotspot of hotpotsInfo) {
+                    var stringLong = hotspot.lon.toString();
+                    var stringLat = hotspot.lat.toString();
+                    var searchedLong = stringLong.substring(0, stringLong.indexOf(".") + 4)
+                    var searchedLat = stringLat.substring(0, stringLat.indexOf(".") + 4)
+                    if (searchedLong == long && searchedLat == lat) {
+                        return hotspot.id;
+                    }
+                }
             }
           }
           var url = location.protocol + "//" + location.hostname + "/api/hotspots?userId=" + userId;
