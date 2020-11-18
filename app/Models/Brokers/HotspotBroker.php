@@ -36,12 +36,30 @@ class HotspotBroker extends Broker
         return $this->select($sql, [$userId]);
     }
 
-    public function getHotspotInfos($hotspotId) {
+
+    /**
+     * For getting all the hotspots info
+     * @param $hotspotId
+     * @return \stdClass|null
+     */
+    public function getHotspotInfos($hotspotId)
+    {
         $sql = "Select X(H.coordinates) as lon, Y(H.coordinates) as lat, AVG(W.speed) as avgWindSpeed,
-                COUNT(C.id) as catches, COUNT(T.bites) as nbBites, Count(T.hooks) as nbHooks From Hotspot H
+                COUNT(C.id) as catches, SUM(T.bites) as nbBites, SUM(T.hooks) as nbHooks From Hotspot H
                     Join Catch C on H.id = C.hotspotId JOIN Winds W On C.id = W.catchId JOIN Trip T on C.tripId = T.id
                         Where H.id = ?";
         return $this->selectSingle($sql, [$hotspotId]);
+    }
+
+    /**
+     * For getting the list of avg pressure of each trip in the hotspot
+     *
+     * @param $hotspotId
+     */
+    public function getListOfPressures($hotspotId)
+    {
+        $sql = "Select T.dateTimeStart as tripDate, AVG(C.barometricPressure) as avgPressure From Hotspot H Join Catch C On H.id = C.hotspotId JOIN Trip T On C.tripId = T.id Where H.id = ? group by T.dateTimeStart";
+        return $this->select($sql, [$hotspotId]);
     }
 
     private function getCatchAloneView()

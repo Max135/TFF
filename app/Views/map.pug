@@ -153,21 +153,11 @@ block content
                 th(data-field='name' rowspan='2' data-valign='middle').grayColor Date
                 th(data-field='star').text-right.grayColor Pressure
             tbody
-              tr#tr-id-1.tr-class-1
-                td#td-id-1.td-class-1 10 Novembre 2010
-                td.text-right 8827
-              tr#tr-id-2.tr-class-2
-                td#td-id-2.td-class-1 10 Novembre 2010
-                td.text-right 1615
-              tr#tr-id-3.tr-class-3
-                td#td-id-3.td-class-1 10 Novembre 2010
-                td.text-right 220
-              tr#tr-id-4.tr-class-4
-                td#td-id-4.td-class-1 10 Novembre 2010
-                td.text-right 1734
-              tr#tr-id-5.tr-class-5
-                td#td-id-5.td-class-1 10 Novembre 2010
-                td.text-right 24
+              if (pressureList != null)
+               each pressure in pressureList
+                 tr
+                   td=format('date', pressure.tripDate)
+                   td.text-right=pressure.avgPressure
         br
 
         .row.justify-content-center
