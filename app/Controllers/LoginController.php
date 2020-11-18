@@ -19,6 +19,8 @@ class LoginController extends \Zephyrus\Application\Controller
         $this->get("/login", "renderLogin");
         $this->post("/login", "login");
 
+        $this->get('/logout', 'logout');
+
         $this->get("/signup", "renderSignup");
         $this->post('/signup', 'signup');
 
@@ -58,6 +60,12 @@ class LoginController extends \Zephyrus\Application\Controller
             Flash::error('invalid credentials');
             return $this->redirect('/login');
         }
+    }
+
+    public function logout()
+    {
+        Session::getInstance()->destroy();
+        return $this->redirect('/login');
     }
 
     public function renderSignup()
