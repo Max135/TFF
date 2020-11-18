@@ -16,9 +16,10 @@ class HotspotBroker extends Broker
     //46.057216, -72.824669
     //200m
     //46.055749, -72.825956
-    public function createNewHotspot($lastCatchId, $userId)
+    public function createNewHotspot($lastCatchId)
     {
-        $currentCoordinates = $this->getCatchCoordinates($lastCatchId);
+        $currentCoordinates = $this->getCatchInfo($lastCatchId);
+        $userId = $currentCoordinates->id;
         $isInHotspot = $this->insertCatchToExistingHotspot($lastCatchId, $userId, $currentCoordinates);
         if($isInHotspot){
             return;
@@ -33,10 +34,10 @@ class HotspotBroker extends Broker
 
     }
 
-    private function addCatchToHotspot($hotspotId, $catch)
+    private function addCatchToHotspot($hotspotId, $catchId)
     {
         $sql = "update Catch set hotspotId = ? where id = ?";
-        $this->query($sql, [$hotspotId, $catch->id]);
+        $this->query($sql, [$hotspotId, $catchId]);
     }
 
     private function insertNewHotspot($userId, $currentCoordinates): int
@@ -46,9 +47,10 @@ class HotspotBroker extends Broker
         return $this->getDatabase()->getLastInsertedId();
     }
 
-    private function getCatchCoordinates($catchId)
+    private function getCatchInfo($catchId)
     {
-        $sql = "select X(C.coordinates) as lat, Y(C.coordinates) as lon from Catch C where id = ?;";
+        $sql = "select X(C.coordinates) as lat, Y(C.coordinates) as lon, U.id as id
+            from Catch C join Trip T on T.id = C.tripId join User U on U.id = T.userId where C.id = ?;";
         return $this->selectSingle($sql, [$catchId]);
     }
 
@@ -74,7 +76,7 @@ class HotspotBroker extends Broker
      */
     private function insertCatchToExistingHotspot($lastCatchId, $userId, $currentCoordinates): bool
     {
-        foreach ($this->getHotspots($userId) as $hotspot) {
+        foreach (($this->getHotspots($userId)) as $hotspot) {
             if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $hotspot->lat, $hotspot->lon)) {
                 $this->addCatchToHotspot($hotspot->id, $lastCatchId);
                 return true;

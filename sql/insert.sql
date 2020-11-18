@@ -26,6 +26,7 @@ insert into Catch values (default, 2, null, 1, 1, 1, date('2008-11-11 11:12:01')
 insert into Winds values (default, 4, 5, 'S');
 insert into Fish values (default, 4, 'Muskellunge', 20);
 
+
 insert into Hotspot values (default, 1, date('2008-10-29 14:56:59'), false, point(47.057236, -73.824689));
 
 insert into Trip values (default, 1, 5, 13, 6, date('2008-10-29 14:56:59'), date('2008-10-29 20:12:01'));
