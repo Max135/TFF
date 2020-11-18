@@ -102,12 +102,9 @@ block content
 
             function getHotspotId(coords, hotpotsInfo) {
                 var long = coords[0].toString();
-                console.log(typeof(long));
                 long = long.substring(0, long.indexOf(".") + 4)
                 var lat = coords[1].toString();
                 lat = lat.substring(0, lat.indexOf(".") + 4)
-                alert(long);
-                alert(lat);
                 for (var hotspot of hotpotsInfo) {
                     var stringLong = hotspot.lon.toString();
                     var stringLat = hotspot.lat.toString();
@@ -124,26 +121,27 @@ block content
           req.send();
 
       .col-3.m-0.p-0#infoContainer
+        -var hotspotInfo = hotspotInfo
         .row.w-100.justify-content-center
           .h1#hotspotTitle="Hotspot"
 
         .row.justify-content-between
-          span.hotspotCoord.p-0="Lat: 43.5675"
-          span.hotspotCoord.p-0="Long: 69.4849"
+          span.hotspotCoord.p-0="Lat: " + hotspotInfo.lat
+          span.hotspotCoord.p-0="Long: " + hotspotInfo.lon
 
         .row.justify-content-between.mt-2
           .justify-content-center.text-center
             i.fas.fa-fish.hotspotIcon
             br
-            span="52"
+            span=hotspotInfo.catches
           .justify-content-center.text-center
             i.fas.fa-drumstick-bite.hotspotIcon
             br
-            span="60"
+            span=hotspotInfo.nbBites
           .justify-content-center.text-center
             i.fa.fa-candy-cane.hotspotIcon.icon-flipped
             br
-            span="75"
+            span=hotspotInfo.nbHooks
 
         br
         br
@@ -177,5 +175,5 @@ block content
             a(href="/winds")
               i.fas.fa-wind.windIcon
               br
-            span#windIndicator="55 mph"
+            span#windIndicator=hotspotInfo.avgWindSpeed + " mph"
 

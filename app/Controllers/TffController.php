@@ -49,18 +49,20 @@ class TffController extends Controller
             'title' => 'Map',
             'userId' => Session::getInstance()->read('id'),
             'mapWidth' => "col-12",
-            'center' => [-72.88, 45.62]
+            'center' => [-72.88, 45.62],
+            'hotspotInfo' => null
         ]);
     }
 
     public function renderMapOnHotspot($coords, $hotspotId) {
         $splitted = explode(",", $coords);
-
+        $hotspotInfo = (new HotspotBroker())->getHotspotInfos($hotspotId);
         return $this->render("map", [
             'title' => 'Map',
             'userId' => Session::getInstance()->read('id'),
             'mapWidth' => "col-9",
-            'center' => [floatval($splitted[0]), floatval($splitted[1])]
+            'center' => [floatval($splitted[0]), floatval($splitted[1])],
+            'hotspotInfo' => $hotspotInfo
         ]);
     }
 

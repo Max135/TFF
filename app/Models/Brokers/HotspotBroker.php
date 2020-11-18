@@ -36,6 +36,14 @@ class HotspotBroker extends Broker
         return $this->select($sql, [$userId]);
     }
 
+    public function getHotspotInfos($hotspotId) {
+        $sql = "Select X(H.coordinates) as lon, Y(H.coordinates) as lat, AVG(W.speed) as avgWindSpeed,
+                COUNT(C.id) as catches, COUNT(T.bites) as nbBites, Count(T.hooks) as nbHooks From Hotspot H
+                    Join Catch C on H.id = C.hotspotId JOIN Winds W On C.id = W.catchId JOIN Trip T on C.tripId = T.id
+                        Where H.id = ?";
+        return $this->selectSingle($sql, [$hotspotId]);
+    }
+
     private function getCatchAloneView()
     {
         $sql = "select * from CatchAlone;";
