@@ -30,30 +30,6 @@ class HotspotBroker extends Broker
         $this->createHotspot($closeCatches, $userId, $currentCoordinates);
     }
 
-    public function getUsersHotspots($userId) {
-
-    }
-
-    private function addCatchToHotspot($hotspotId, $catchId)
-    {
-        $sql = "update Catch set hotspotId = ? where id = ?";
-        $this->query($sql, [$hotspotId, $catchId]);
-    }
-
-    private function insertNewHotspot($userId, $currentCoordinates): int
-    {
-        $sql = "insert into Hotspot values (default, ?, now(), false, point(?, ?));";
-        $this->query($sql, [$userId, $currentCoordinates->lat, $currentCoordinates->lon]);
-        return $this->getDatabase()->getLastInsertedId();
-    }
-
-    private function getCatchInfo($catchId)
-    {
-        $sql = "select X(C.coordinates) as lat, Y(C.coordinates) as lon, U.id as id
-            from Catch C join Trip T on T.id = C.tripId join User U on U.id = T.userId where C.id = ?;";
-        return $this->selectSingle($sql, [$catchId]);
-    }
-
     public function getHotspots($userId)
     {
         $sql = "select id, X(coordinates) as lat, Y(coordinates) as lon from Hotspot where userId = ?;";
@@ -137,5 +113,25 @@ class HotspotBroker extends Broker
 //        echo "<p>".pow(self::HOTSPOT_RADIUS, 2)." > ".pow($x1 - $x2, 2)." + ".pow($y1 - $y2, 2)."</p>";
 //        echo "<p>".(pow($x1 - $x2, 2) + pow($y1 - $y2, 2))."</p>";
         return pow(self::HOTSPOT_RADIUS, 2) >= (pow($x1 - $x2, 2) + pow($y1 - $y2, 2));
+    }
+
+    private function addCatchToHotspot($hotspotId, $catchId)
+    {
+        $sql = "update Catch set hotspotId = ? where id = ?";
+        $this->query($sql, [$hotspotId, $catchId]);
+    }
+
+    private function insertNewHotspot($userId, $currentCoordinates): int
+    {
+        $sql = "insert into Hotspot values (default, ?, now(), false, point(?, ?));";
+        $this->query($sql, [$userId, $currentCoordinates->lat, $currentCoordinates->lon]);
+        return $this->getDatabase()->getLastInsertedId();
+    }
+
+    private function getCatchInfo($catchId)
+    {
+        $sql = "select X(C.coordinates) as lat, Y(C.coordinates) as lon, U.id as id
+            from Catch C join Trip T on T.id = C.tripId join User U on U.id = T.userId where C.id = ?;";
+        return $this->selectSingle($sql, [$catchId]);
     }
 }

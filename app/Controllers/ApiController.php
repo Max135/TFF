@@ -13,13 +13,16 @@ class ApiController extends Controller
         $this->post("/api/authenticate", "apiPostAuthenticate");
         $this->post("/api/catch", "apiPostCatch");
         $this->post("/api/catches", "apiPostCatches");
+        $this->post('/api/trip', 'apiPostTrip');
         $this->get('/api/hotspots', 'getUsersHotspots');
     }
 
+    /**
+     * Parameters needed in post: tripId, temperature, pressure, humidity, time, longitude, latitude
+     */
     public function apiPostCatch()
     {
         $tripId = $this->getPostValue('tripId');
-        $userId = $this->getPostValue('userId');
         $temperature = $this->getPostValue('temperature');
         $pressure = $this->getPostValue('pressure');
         $humidity = $this->getPostValue('humidity');
@@ -27,8 +30,13 @@ class ApiController extends Controller
         $lng = $this->getPostValue('longitude');
         $lat = $this->getPostValue('latitude');
 
-        $catchId = (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
-        (new HotspotBroker())->createNewHotspot($catchId, $userId);
+        (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
+//        (new HotspotBroker())->createNewHotspot($catchId, $userId);
+    }
+
+    public function apiPostTrip()
+    {
+
     }
 
     public function getUsersHotspots() {
@@ -41,8 +49,7 @@ class ApiController extends Controller
     {
         $catches = $_POST['catches'];
         foreach ($catches as $catch) {
-            $catchId = (new CatchBroker())->insert($catch->tripId, $catch->temperature, $catch->pressure, $catch->humidity, $catch->time, $catch->lng, $catch->lat);
-            (new HotspotBroker())->createNewHotspot($catchId, $catch->userId);
+            (new CatchBroker())->insert($catch->tripId, $catch->temperature, $catch->pressure, $catch->humidity, $catch->time, $catch->lng, $catch->lat);
         }
     }
 
@@ -60,6 +67,10 @@ class ApiController extends Controller
         return $this->json('nil');
     }
 
+    /**
+     * @param string $name
+     * @return mixed|null
+     */
     private function getPostValue(string $name)
     {
         if (isset($name)) {

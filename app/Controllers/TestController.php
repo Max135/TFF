@@ -38,7 +38,7 @@ class TestController extends \Zephyrus\Security\Controller
         $catchId = (new CatchBroker())->insert(3, 1, 1,
             1, '2008-11-11 00:00:00', $form->getValue('lon'), $form->getValue('lat'));
 
-        (new HotspotBroker())->createNewHotspot($catchId);
+//        (new HotspotBroker())->createNewHotspot($catchId);
 
         return $this->redirect('testHotspot');
     }
