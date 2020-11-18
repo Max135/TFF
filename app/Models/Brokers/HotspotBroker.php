@@ -77,7 +77,7 @@ class HotspotBroker extends Broker
     private function insertCatchToExistingHotspot($lastCatchId, $userId, $currentCoordinates): bool
     {
         foreach (($this->getHotspots($userId)) as $hotspot) {
-            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $hotspot->lat, $hotspot->lon)) {
+            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $hotspot->lat, $hotspot->lon) < self::HOTSPOT_RADIUS) {
                 $this->addCatchToHotspot($hotspot->id, $lastCatchId);
                 return true;
             }
@@ -89,7 +89,7 @@ class HotspotBroker extends Broker
     {
         $closeCatches = array();
         foreach ($this->getCatchAloneView() as $catch) {
-            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $catch->lat, $catch->lon)) {
+            if ($this->measureAccurately($currentCoordinates->lat, $currentCoordinates->lon, $catch->lat, $catch->lon) < self::HOTSPOT_RADIUS) {
                 $closeCatches[] = $catch;
             }
         }
