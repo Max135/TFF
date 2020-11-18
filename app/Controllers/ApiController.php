@@ -2,7 +2,9 @@
 
 use Models\Brokers\CatchBroker;
 use Models\Brokers\HotspotBroker;
+use Models\Brokers\TripBroker;
 use Models\Brokers\UserBroker;
+use Zephyrus\Network\Response;
 
 class ApiController extends Controller
 {
@@ -34,9 +36,22 @@ class ApiController extends Controller
 //        (new HotspotBroker())->createNewHotspot($catchId, $userId);
     }
 
+    /**
+     * insert a new trip into database and return it's id
+     *
+     * @return Response
+     */
     public function apiPostTrip()
     {
+        $userId = $this->getPostValue('userId');
+        $bites = $this->getPostValue('bites');
+        $hooks = $this->getPostValue('hooks');
+        $dateStart = $this->getPostValue('dateStart');
+        $dateEnd = $this->getPostValue('dateEnd');
 
+        $tripId = (new TripBroker())->insert($userId, $bites, $hooks, $dateStart, $dateEnd);
+
+        return $this->json($tripId);
     }
 
     public function getUsersHotspots() {
@@ -45,6 +60,9 @@ class ApiController extends Controller
         return $this->json($result);
     }
 
+    /**
+     * To insert an array of catches
+     */
     public function apiPostCatches()
     {
         $catches = $_POST['catches'];
@@ -53,6 +71,11 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Verify the crendentials, returns nil if bad, or the user's data if correct
+     *
+     * @return Response
+     */
     public function apoPostAuthenticate()
     {
         if (isset($_POST['email']) && isset($_POST['password'])) {
