@@ -68,8 +68,9 @@ class TffController extends Controller
     }
 
     public function renderWindsPage($hotspotId) {
-
-        return $this->render('wind');
+        return $this->render('wind', [
+            'hotspotId' => $hotspotId
+        ]);
     }
 
     private function buildProjectTable($data) {

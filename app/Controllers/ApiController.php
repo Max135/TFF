@@ -19,6 +19,7 @@ class ApiController extends Controller
         $this->post('/api/image', 'savePicture');
         $this->get('/api/image', 'savePicture');
         $this->get('/api/hotspots', 'getUsersHotspots');
+        $this->get('/api/hotspotWinds', 'getHotspotWinds');
     }
 
     /**
@@ -72,9 +73,26 @@ class ApiController extends Controller
         return $this->json($tripId);
     }
 
+    /**
+     * (For map.pug AJAX) Returns all the users hotspots
+     *
+     * @return Response
+     */
     public function getUsersHotspots() {
         $userId = $_GET['userId'];
         $result = (new HotspotBroker())->getHotspots($userId);
+        return $this->json($result);
+    }
+
+    /**
+     * (For winds.pug AJAX) Returns the avg array and the range array of winds for all of the trips inside the hotspot
+     *
+     */
+    public function getHotspotWinds() {
+        $hotspotId = $_GET['hotspotId'];
+        $result = [];
+        $result[0] = (new HotspotBroker())->getHotspotsWindsRange($hotspotId);
+        $result[1] = (new HotspotBroker())->getHotspotsWindsAvgByTrip($hotspotId);
         return $this->json($result);
     }
 
