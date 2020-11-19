@@ -10,6 +10,7 @@ class FishBroker extends Broker
 
     public function getPicture($fishId)
     {
-        $sql = "";
+        $sql = "select picturePath from Fish where id = ?;";
+        return $this->selectSingle($sql, [$fishId])->picturePath;
     }
 }

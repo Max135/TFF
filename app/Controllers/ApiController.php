@@ -1,6 +1,7 @@
 <?php namespace Controllers;
 
 use Models\Brokers\CatchBroker;
+use Models\Brokers\FishBroker;
 use Models\Brokers\HotspotBroker;
 use Models\Brokers\TripBroker;
 use Models\Brokers\UserBroker;
@@ -34,12 +35,12 @@ class ApiController extends Controller
         $lng = $this->getPostValue('longitude');
         $lat = $this->getPostValue('latitude');
 
-        (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
-        $pictureName = $this->savePicture();
-        if($pictureName != null) {
+        $species = $this->getPostValue('species');
+        $weight = $this->getPostValue('weight');
 
-        }
-//        (new HotspotBroker())->createNewHotspot($catchId, $userId);
+        $catchId = (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
+        $pictureName = $this->savePicture();
+        (new FishBroker())->insert($catchId, $species, $weight, $pictureName);
     }
 
     /**
