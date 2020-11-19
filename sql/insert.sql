@@ -1,7 +1,7 @@
 use FishingDB;
 
 # Password = Omega123
-insert into User values (default, "qwe@qwe.qwe", "$2y$10$.PWFhre43nG7h88stW/.PelsIe09hwLROWIkkij4o8NgDYZtP6/c.", "qwe", null);
+insert into User values (default, 'qwe@qwe.qwe', '$2y$10$.PWFhre43nG7h88stW/.PelsIe09hwLROWIkkij4o8NgDYZtP6/c.', 'qwe', null);
 
 insert into Hotspot values (default, 1, date('2008-10-29 14:56:59'), false, point(46.057236, -72.824689));
 

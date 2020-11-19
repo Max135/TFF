@@ -17,7 +17,7 @@ class TffController extends Controller
         $this->get('/hub', 'renderHub');
         $this->get('/friends', 'renderAcquaintances');
         $this->get('/options', 'renderHub');
-        $this->get('/winds', 'renderWindsPage');
+        $this->get('/winds/{id}', 'renderWindsPage');
     }
 
 //    public function before(): ?Response
@@ -67,7 +67,8 @@ class TffController extends Controller
         ]);
     }
 
-    public function renderWindsPage() {
+    public function renderWindsPage($hotspotId) {
+
         return $this->render('wind');
     }
 
@@ -82,6 +83,7 @@ class TffController extends Controller
     private function buildHotspotInfo($hotspotId) {
         $result = (new HotspotBroker())->getHotspotInfos($hotspotId);
         $hotspotInfo = (new HotspotBroker())->getHotspotsWindAvg($hotspotId);
+        $hotspotInfo->id = $hotspotId;
         $hotspotInfo->catches = $this->calculateNbCatch($result);
         $hotspotInfo->nbHooks = $this->calculateNbHook($result);
         $hotspotInfo->nbBites = $this->calculateNbBites($result);
