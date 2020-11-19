@@ -2,12 +2,12 @@ create database if not exists FishingDB;
 use FishingDB;
 
 drop table if exists Friend;
-drop table if exists Hotspot;
 drop table if exists FishPicture;
 drop table if exists Picture;
 drop table if exists Fish;
 drop table if exists Winds;
 drop table if exists Catch;
+drop table if exists Hotspot;
 drop table if exists Trip;
 drop table if exists User;
 
@@ -18,7 +18,7 @@ create table User (
     email varchar(255) unique,
     password varchar(255),
     username varchar(255),
-    picture blob
+    picturePath varchar(255)
 );
 
 create table Trip (
@@ -33,6 +33,18 @@ create table Trip (
 
 alter table Trip
     add constraint fk_trip_user foreign key (userId) references User(id);
+
+create table Hotspot (
+    id int auto_increment primary key,
+    userId int,
+    lastTimeUpdated datetime,
+    isShared bool,
+    coordinates point
+);
+
+alter table Trip
+    add constraint fk_hotspot_user foreign key (userId) references User(id);
+
 
 create table Catch (
     id int auto_increment primary key,
@@ -51,6 +63,7 @@ alter table Catch
 alter table Catch
     add constraint fk_catch_hotspot foreign key (hotspotId) references Hotspot(id);
 
+
 create table Winds (
     id int auto_increment primary key,
     catchId int,
@@ -60,6 +73,7 @@ create table Winds (
 
 alter table Winds
     add constraint fk_winds_catch foreign key (catchId) references Catch(id);
+
 
 create table Fish (
     id int auto_increment primary key,
@@ -71,10 +85,12 @@ create table Fish (
 alter table Fish
     add constraint fk_fish_catch foreign key (catchId) references Catch(id);
 
+
 create table Picture (
-    id int,
+    id int auto_increment primary key,
     path varchar(255)
 );
+
 
 create table FishPicture (
     fishId int,
@@ -90,17 +106,6 @@ alter table FishPicture
 alter table FishPicture
     add constraint fk_fish_picture_picture foreign key (pictureId) references Picture(id);
 
-
-create table Hotspot (
-    id int auto_increment primary key,
-    userId int,
-    lastTimeUpdated datetime,
-    isShared bool,
-    coordinates point
-);
-
-alter table Trip
-    add constraint fk_hotspot_user foreign key (userId) references User(id);
 
 create table Friend (
     userOne int references User(id),
