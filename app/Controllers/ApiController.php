@@ -11,7 +11,6 @@ class ApiController extends Controller
 
     public function initializeRoutes()
     {
-
         $this->post("/api/authenticate", "apiPostAuthenticate");
         $this->post("/api/catch", "apiPostCatch");
         $this->post("/api/catches", "apiPostCatches");
@@ -82,11 +81,11 @@ class ApiController extends Controller
     }
 
     /**
-     * Verify the crendentials, returns nil if bad, or the user's data if correct
+     * Verify the credentials, returns nil if bad, or the user's data if correct
      *
      * @return Response
      */
-    public function apoPostAuthenticate()
+    public function apiPostAuthenticate()
     {
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $email = $_POST['email'];
