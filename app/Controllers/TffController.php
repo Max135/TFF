@@ -18,6 +18,7 @@ class TffController extends Controller
         $this->get('/friends', 'renderAcquaintances');
         $this->get('/options', 'renderHub');
         $this->get('/winds/{id}', 'renderWindsPage');
+        $this->get('/store', 'renderStore');
     }
 
 //    public function before(): ?Response
@@ -71,6 +72,10 @@ class TffController extends Controller
         return $this->render('wind', [
             'hotspotId' => $hotspotId
         ]);
+    }
+
+    public function renderStore() {
+        return $this->render('store');
     }
 
     private function buildProjectTable($data) {
