@@ -79,32 +79,12 @@ create table Fish (
     id int auto_increment primary key,
     catchId int,
     species varchar(255),
-    weight double
+    weight double,
+    picturePath varchar(255)
 );
 
 alter table Fish
     add constraint fk_fish_catch foreign key (catchId) references Catch(id);
-
-
-create table Picture (
-    id int auto_increment primary key,
-    path varchar(255)
-);
-
-
-create table FishPicture (
-    fishId int,
-    pictureId int
-);
-
-alter table FishPicture
-    add constraint pk_FishPicture primary key (fishId, pictureId);
-
-alter table FishPicture
-    add constraint fk_fish_picture_fish foreign key (fishId) references Fish(id);
-
-alter table FishPicture
-    add constraint fk_fish_picture_picture foreign key (pictureId) references Picture(id);
 
 
 create table Friend (

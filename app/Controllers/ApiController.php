@@ -4,6 +4,7 @@ use Models\Brokers\CatchBroker;
 use Models\Brokers\HotspotBroker;
 use Models\Brokers\TripBroker;
 use Models\Brokers\UserBroker;
+use stdClass;
 use Zephyrus\Network\Response;
 
 class ApiController extends Controller
@@ -15,6 +16,8 @@ class ApiController extends Controller
         $this->post("/api/catch", "apiPostCatch");
         $this->post("/api/catches", "apiPostCatches");
         $this->post('/api/trip', 'apiPostTrip');
+        $this->post('/api/image', 'savePicture');
+        $this->get('/api/image', 'savePicture');
         $this->get('/api/hotspots', 'getUsersHotspots');
     }
 
@@ -32,17 +35,23 @@ class ApiController extends Controller
         $lat = $this->getPostValue('latitude');
 
         (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
-        $this->savePicture();
+        $pictureName = $this->savePicture();
+        if($pictureName != null) {
+
+        }
 //        (new HotspotBroker())->createNewHotspot($catchId, $userId);
     }
 
     /**
-     * Saves the picture in the server files and insert the path of the file in database
+     * Saves the picture in the server files
      */
-    public function savePicture()
+    public function savePicture(): ?string
     {
-        $targetDir = "assets/images/" . basename($_FILES['file']['name']);
-        move_uploaded_file($_FILES['file']['tmp_name'], $targetDir);
+        $targetDir = "assets/images/" .time() . str_replace(" ", "_", basename($_FILES['file']['name']));
+        if (move_uploaded_file($_FILES['file']['tmp_name'], $targetDir)) {
+            return $this->json($targetDir);
+        }
+        return null;
     }
 
     /**
@@ -96,7 +105,7 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
-        $user = new \stdClass();
+        $user = new stdClass();
         $user->id = 0;
         return $this->json($user);
     }
