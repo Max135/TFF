@@ -50,6 +50,12 @@ class HotspotBroker extends Broker
         return $this->select($sql, [$hotspotId]);
     }
 
+    /**
+     * Returns the avg wind speed for all the trips
+     *
+     * @param $hotspotId
+     * @return \stdClass|null
+     */
     public function getHotspotsWindAvg($hotspotId) {
         $sql = "Select X(H.coordinates) as lon, Y(H.coordinates) as lat, AVG(W.speed) as avgWindSpeed From Hotspot H Join Catch C on H.id = C.hotspotId JOIN Winds W On C.id = W.catchId Where H.id = ?";
         return $this->selectSingle($sql, [$hotspotId]);
@@ -63,6 +69,32 @@ class HotspotBroker extends Broker
     public function getListOfPressures($hotspotId)
     {
         $sql = "Select T.dateTimeStart as tripDate, AVG(C.barometricPressure) as avgPressure From Hotspot H Join Catch C On H.id = C.hotspotId JOIN Trip T On C.tripId = T.id Where H.id = ? group by T.dateTimeStart";
+        return $this->select($sql, [$hotspotId]);
+    }
+
+    /**
+     * Returns the min and max wind speeds for each trip in the hotspot
+     *
+     * @param $hotspotId
+     * @return \stdClass[]
+     */
+    public function getHotspotsWindsRange($hotspotId) {
+        $sql = "Select  T.dateTimeStart, MIN(W.speed) as minSpeed, MAX(W.speed) as maxSpeed
+                    From Catch C Join Trip T On C.tripId = T.id Join Hotspot H On C.hotspotId = H.id Join Winds W on C.id = W.catchId
+                        Where H.id = ? GROUP BY T.id;";
+        return $this->select($sql, [$hotspotId]);
+    }
+
+    /**
+     * Returns the avg wind speed for each trip in the hotspot
+     *
+     * @param $hotspotId
+     * @return \stdClass[]
+     */
+    public function getHotspotsWindsAvgByTrip($hotspotId) {
+        $sql = "Select  T.dateTimeStart, AVG(W.speed) as avgSpeed
+                    From Catch C Join Trip T On C.tripId = T.id Join Hotspot H On C.hotspotId = H.id Join Winds W on C.id = W.catchId
+                        Where H.id = ? GROUP BY T.id;";
         return $this->select($sql, [$hotspotId]);
     }
 
