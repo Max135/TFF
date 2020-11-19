@@ -96,7 +96,9 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
-        return $this->json('nil');
+        $user = new \stdClass();
+        $user->id = 0;
+        return $this->json($user);
     }
 
     /**
