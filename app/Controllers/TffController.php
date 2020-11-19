@@ -57,15 +57,13 @@ class TffController extends Controller
 
     public function renderMapOnHotspot($coords, $hotspotId) {
         $splitted = explode(",", $coords);
-        $hotspotInfo = (new HotspotBroker())->getHotspotInfos($hotspotId);
-        $pressureList = (new HotspotBroker())->getListOfPressures($hotspotId);
         return $this->render("map", [
             'title' => 'Map',
             'userId' => Session::getInstance()->read('id'),
             'mapWidth' => "col-9",
             'center' => [floatval($splitted[0]), floatval($splitted[1])],
-            'hotspotInfo' => $hotspotInfo,
-            'pressureList' => $pressureList
+            'hotspotInfo' => $this->buildHotspotInfo($hotspotId),
+            'pressureList' => (new HotspotBroker())->getListOfPressures($hotspotId)
         ]);
     }
 
@@ -79,5 +77,38 @@ class TffController extends Controller
             "Start Time",
             "End Time",
             "Pressure"], $data);
+    }
+
+    private function buildHotspotInfo($hotspotId) {
+        $result = (new HotspotBroker())->getHotspotInfos($hotspotId);
+        $hotspotInfo = (new HotspotBroker())->getHotspotsWindAvg($hotspotId);
+        $hotspotInfo->catches = $this->calculateNbCatch($result);
+        $hotspotInfo->nbHooks = $this->calculateNbHook($result);
+        $hotspotInfo->nbBites = $this->calculateNbBites($result);
+        return $hotspotInfo;
+    }
+
+    private function calculateNbCatch($result) {
+        $total = 0;
+        foreach ($result as $trip) {
+            $total += $trip->catches;
+        }
+        return $total;
+    }
+
+    private function calculateNbHook($result) {
+        $total = 0;
+        foreach ($result as $trip) {
+            $total += $trip->nbHooks;
+        }
+        return $total;
+    }
+
+    private function calculateNbBites($result) {
+        $total = 0;
+        foreach ($result as $trip) {
+            $total += $trip->nbBites;
+        }
+        return $total;
     }
 }

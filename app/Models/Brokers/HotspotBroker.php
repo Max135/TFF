@@ -44,10 +44,14 @@ class HotspotBroker extends Broker
      */
     public function getHotspotInfos($hotspotId)
     {
-        $sql = "Select X(H.coordinates) as lon, Y(H.coordinates) as lat, AVG(W.speed) as avgWindSpeed,
-                COUNT(C.id) as catches, SUM(T.bites) as nbBites, SUM(T.hooks) as nbHooks From Hotspot H
-                    Join Catch C on H.id = C.hotspotId JOIN Winds W On C.id = W.catchId JOIN Trip T on C.tripId = T.id
-                        Where H.id = ?";
+        $sql = "Select X(H.coordinates) as lon, Y(H.coordinates) as lat, COUNT(C.id) as catches, T.bites as nbBites, T.hooks as nbHooks
+                    From Catch C Join Trip T On C.tripId = T.id Join Hotspot H On C.hotspotId = H.id
+                        Where H.id = ? Group By T.id";
+        return $this->select($sql, [$hotspotId]);
+    }
+
+    public function getHotspotsWindAvg($hotspotId) {
+        $sql = "Select X(H.coordinates) as lon, Y(H.coordinates) as lat, AVG(W.speed) as avgWindSpeed From Hotspot H Join Catch C on H.id = C.hotspotId JOIN Winds W On C.id = W.catchId Where H.id = ?";
         return $this->selectSingle($sql, [$hotspotId]);
     }
 
