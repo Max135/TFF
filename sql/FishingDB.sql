@@ -1,6 +1,7 @@
 create database if not exists FishingDB;
 use FishingDB;
 
+drop table if exists ApiLogs;
 drop table if exists Friend;
 drop table if exists Fish;
 drop table if exists Winds;
@@ -90,6 +91,11 @@ create table Friend (
     userTwo int references User(id)
 );
 
+create table ApiLogs(
+    successState bool,
+    message varchar(255)
+);
+
 alter table Friend
     add constraint pk_Friend primary key (userOne, userTwo);
 
@@ -100,4 +106,3 @@ alter table Friend
     add constraint fk_friend_user_two foreign key (userTwo) references User(id);
 
 create view CatchAlone as select C.id, X(C.coordinates) as lat, Y(C.coordinates) as lon from Catch C left outer join Hotspot H on H.id = C.hotspotId where C.hotspotId IS NULL;
-

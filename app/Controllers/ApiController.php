@@ -1,5 +1,6 @@
 <?php namespace Controllers;
 
+use Models\Brokers\ApiLogsBroker;
 use Models\Brokers\CatchBroker;
 use Models\Brokers\FishBroker;
 use Models\Brokers\HotspotBroker;
@@ -21,6 +22,7 @@ class ApiController extends Controller
         $this->get('/api/image', 'savePicture');
         $this->get('/api/hotspots', 'getUsersHotspots');
         $this->get('/api/hotspotWinds', 'getHotspotWinds');
+        $this->get("/api/logs", 'showLogs');
     }
 
     /**
@@ -116,6 +118,7 @@ class ApiController extends Controller
     public function apiPostAuthenticate()
     {
         if (isset($_POST['email']) && isset($_POST['password'])) {
+            (new ApiLogsBroker())->insert(true, $_POST['email'] . $_POST['password']);
             $email = $_POST['email'];
             $password = $_POST['password'];
             $broker = new UserBroker();
@@ -124,9 +127,18 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
+        (new ApiLogsBroker())->insert(false, $_POST['email'] . $_POST['password']);
         $user = new stdClass();
         $user->id = 0;
         return $this->json($user);
+    }
+
+    /**
+     * Prints all data from ApiLogs
+     */
+    public function showLogs()
+    {
+        return var_dump((new ApiLogsBroker())->findAll());
     }
 
     /**
