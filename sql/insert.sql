@@ -45,10 +45,10 @@ insert into Fish values (default, 7, 'Salmon', 400, null);
 
 insert into Catch values (default, 3, 2, 14, 1, 1, date('2008-11-11 11:13:11'), point(47.057235, -73.824687));
 insert into Winds values (default, 8, 10, 'W');
-insert into Fish values (default, 8, 'Salmon', 220);
+insert into Fish values (default, 8, 'Salmon', 220, null);
 
 insert into Trip values (default, 1, 5, 13, 6, date('2008-11-29 14:56:59'), date('2008-11-29 20:12:01'));
 
 insert into Catch values (default, 4, 2, 21, 3, 4, date('2008-11-11 11:13:11'), point(47.057235, -73.824687));
 insert into Winds values (default, 9, 100, 'O');
-insert into Fish values (default, 9, 'Magikarp', 25);
+insert into Fish values (default, 9, 'Magikarp', 25, null);
