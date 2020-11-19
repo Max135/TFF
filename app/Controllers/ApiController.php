@@ -33,7 +33,17 @@ class ApiController extends Controller
         $lat = $this->getPostValue('latitude');
 
         (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
+        $this->savePicture();
 //        (new HotspotBroker())->createNewHotspot($catchId, $userId);
+    }
+
+    /**
+     * Saves the picture in the server files and insert the path of the file in database
+     */
+    public function savePicture()
+    {
+        $targetDir = "assets/images/" . basename($_FILES['file']['name']);
+        move_uploaded_file($_FILES['file']['tmp_name'], $targetDir);
     }
 
     /**
