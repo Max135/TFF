@@ -2,8 +2,6 @@ create database if not exists FishingDB;
 use FishingDB;
 
 drop table if exists Friend;
-drop table if exists FishPicture;
-drop table if exists Picture;
 drop table if exists Fish;
 drop table if exists Winds;
 drop table if exists Catch;
