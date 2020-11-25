@@ -129,7 +129,7 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
-        (new ApiLogsBroker())->insert(false, var_dump($_POST));
+        (new ApiLogsBroker())->insert(false, $this->json($_POST));
         $user = new stdClass();
         $user->id = 0;
         return $this->json($user);
