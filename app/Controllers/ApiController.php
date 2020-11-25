@@ -153,8 +153,7 @@ class ApiController extends Controller
      */
     public function showLogs()
     {
-//        return $this->json((new ApiLogsBroker())->findAll());
-        return $this->html(var_dump((new ApiLogsBroker())->findAll()));
+        return $this->json((new ApiLogsBroker())->findAll());
     }
 
     /**
