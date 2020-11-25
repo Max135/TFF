@@ -78,6 +78,18 @@ class ApiController extends Controller
     }
 
     /**
+     * Function to update the trip at the end of it
+     */
+    public function updatePostTrip()
+    {
+        $bites = $this->getPostValue('bites');
+        $hooks = $this->getPostValue('hooks');
+        $dateEnd = $this->getPostValue('dateEnd');
+
+
+    }
+
+    /**
      * (For map.pug AJAX) Returns all the users hotspots
      *
      * @return Response
