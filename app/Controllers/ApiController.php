@@ -22,7 +22,9 @@ class ApiController extends Controller
         $this->get('/api/image', 'savePicture');
         $this->get('/api/hotspots', 'getUsersHotspots');
         $this->get('/api/hotspotWinds', 'getHotspotWinds');
+
         $this->get("/api/logs", 'showLogs');
+        $this->get("/api/logs/{successState}", "showLogsBySuccess");
         $this->get("/api/logs/clear", "clearLogs");
     }
 
@@ -124,14 +126,14 @@ class ApiController extends Controller
     }
 
     /**
-     * Verify the credentials, returns nil if bad, or the user's data if correct
+     * Verify the credentials, returns blank user with id = 0 if bad, or the user's data if correct
      *
      * @return Response
      */
     public function apiPostAuthenticate()
     {
         if (isset($_POST['email']) && isset($_POST['password'])) {
-            (new ApiLogsBroker())->insert(true, $_POST['email'] . $_POST['password']);
+            (new ApiLogsBroker())->insert(true, "Credentials are set ; " . $_POST['email'] . " : " . $_POST['password']);
             $email = $_POST['email'];
             $password = $_POST['password'];
             $broker = new UserBroker();
@@ -140,7 +142,7 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
-        (new ApiLogsBroker())->insert(false, "Not working...");
+        (new ApiLogsBroker())->insert(false, "Credentials aren't set");
         $user = new stdClass();
         $user->id = 0;
         $user->email = "";
@@ -153,9 +155,25 @@ class ApiController extends Controller
      */
     public function showLogs()
     {
-        return $this->json((new ApiLogsBroker())->findAll());
+        return var_dump((new ApiLogsBroker())->findAll());
     }
 
+    /**
+     *  Prints all logs that have a success depending on param
+     *
+     * @param bool $successState
+     * @return void
+     */
+    public function showLogsBySuccess(bool $successState)
+    {
+        return var_dump((new ApiLogsBroker())->findAllBySuccess($successState));
+    }
+
+    /**
+     *  Delete all from the ApiLogs Table
+     *
+     * @return Response
+     */
     public function clearLogs()
     {
         (new ApiLogsBroker())->deleteAll();
