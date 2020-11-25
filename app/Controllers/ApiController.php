@@ -118,7 +118,6 @@ class ApiController extends Controller
      */
     public function apiPostAuthenticate()
     {
-        // TODO : checker c'est quoi que le serveur recoit
         if (isset($_POST['email']) && isset($_POST['password'])) {
             (new ApiLogsBroker())->insert(true, $_POST['email'] . $_POST['password']);
             $email = $_POST['email'];
@@ -129,9 +128,11 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
-        (new ApiLogsBroker())->insert(false, $this->json($_POST));
+        (new ApiLogsBroker())->insert(false, "Not working...");
         $user = new stdClass();
         $user->id = 0;
+        $user->email = "";
+        $user->username = "";
         return $this->json($user);
     }
 
