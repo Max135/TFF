@@ -24,7 +24,8 @@ class ApiController extends Controller
         $this->get('/api/hotspotWinds', 'getHotspotWinds');
 
         $this->get("/api/logs", 'showLogs');
-        $this->get("/api/logs/{successState}", "showLogsBySuccess");
+        $this->get("/api/logs/successful", "showSuccessfulLogs");
+        $this->get("/api/logs/unsuccessful", "showUnSuccessfulLogs");
         $this->get("/api/logs/clear", "clearLogs");
     }
 
@@ -142,31 +143,38 @@ class ApiController extends Controller
                 return $this->json($broker->findById($broker->findId($email)));
             }
         }
-        (new ApiLogsBroker())->insert(false, "Credentials aren't set");
-        $user = new stdClass();
-        $user->id = 0;
-        $user->email = "";
-        $user->username = "";
-        return $this->json($user);
+
+        (new ApiLogsBroker())->insert(false, "Credentials not found / not valid");
+        return $this->json($this->createErrorUser());
     }
 
     /**
-     * Prints all data from ApiLogs
+     *  Prints all data from ApiLogs
      */
     public function showLogs()
     {
-        return var_dump((new ApiLogsBroker())->findAll());
+//        return $this->json((new ApiLogsBroker())->findAll());
+        return $this->html(var_dump((new ApiLogsBroker())->findAll()));
     }
 
     /**
-     *  Prints all logs that have a success depending on param
+     *  Prints all logs that are successful
      *
-     * @param bool $successState
-     * @return void
+     * @return Response
      */
-    public function showLogsBySuccess(bool $successState)
+    public function showSuccessfulLogs()
     {
-        return var_dump((new ApiLogsBroker())->findAllBySuccess($successState));
+        return $this->json((new ApiLogsBroker())->findAllBySuccess(true));
+    }
+
+    /**
+     *  Prints all logs that are unsuccessful
+     *
+     * @return Response
+     */
+    public function showUnSuccessfulLogs()
+    {
+        return $this->json((new ApiLogsBroker())->findAllBySuccess(false));
     }
 
     /**
@@ -178,6 +186,22 @@ class ApiController extends Controller
     {
         (new ApiLogsBroker())->deleteAll();
         return $this->redirect("/api/logs");
+    }
+
+    /**
+     * Create a mock user to respond to authenticate route
+     *
+     * @return stdClass
+     */
+    private function createErrorUser()
+    {
+        $user = new stdClass();
+        $user->id = 0;
+        $user->email = "";
+        $user->password = "";
+        $user->username = "";
+        $user->picturePath = "";
+        return $user;
     }
 
     /**
