@@ -1,5 +1,6 @@
 <?php namespace Controllers;
 
+use Models\Brokers\FishBroker;
 use Models\Brokers\HotspotBroker;
 use Models\TableObject;
 use phpDocumentor\Reflection\Types\Array_;
@@ -19,6 +20,7 @@ class TffController extends Controller
         $this->get('/options', 'renderHub');
         $this->get('/winds/{id}', 'renderWindsPage');
         $this->get('/store', 'renderStore');
+        $this->get('/fish/{id}', 'renderFishPage');
     }
 
 //    public function before(): ?Response
@@ -76,6 +78,12 @@ class TffController extends Controller
 
     public function renderStore() {
         return $this->render('store');
+    }
+
+    public function renderFishPage($id) {
+        return $this->render('fish', [
+            'fishes' => (new FishBroker())->GetAllFishesFromHotspot($id)
+        ]);
     }
 
     private function buildProjectTable($data) {
