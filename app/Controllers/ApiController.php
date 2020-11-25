@@ -50,7 +50,7 @@ class ApiController extends Controller
     /**
      * Saves the picture in the server files
      */
-    public function savePicture(): ?string
+    public function savePicture()
     {
         $targetDir = "assets/images/" .time() . str_replace(" ", "_", basename($_FILES['file']['name']));
         if (move_uploaded_file($_FILES['file']['tmp_name'], $targetDir)) {
