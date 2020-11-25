@@ -140,7 +140,7 @@ class ApiController extends Controller
      */
     public function showLogs()
     {
-        return $this->json(var_dump((new ApiLogsBroker())->findAll()));
+        return $this->json((new ApiLogsBroker())->findAll());
     }
 
     public function clearLogs()
