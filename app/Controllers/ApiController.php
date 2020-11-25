@@ -23,6 +23,7 @@ class ApiController extends Controller
         $this->get('/api/hotspots', 'getUsersHotspots');
         $this->get('/api/hotspotWinds', 'getHotspotWinds');
         $this->get("/api/logs", 'showLogs');
+        $this->get("/api/logs/clear", "clearLogs");
     }
 
     /**
@@ -139,7 +140,13 @@ class ApiController extends Controller
      */
     public function showLogs()
     {
-        return var_dump((new ApiLogsBroker())->findAll());
+        return $this->json(var_dump((new ApiLogsBroker())->findAll()));
+    }
+
+    public function clearLogs()
+    {
+        (new ApiLogsBroker())->deleteAll();
+        return $this->redirect("/api/logs");
     }
 
     /**

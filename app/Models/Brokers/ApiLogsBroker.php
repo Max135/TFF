@@ -13,4 +13,10 @@ class ApiLogsBroker extends Broker
         $sql = "select * from ApiLogs";
         return $this->select($sql);
     }
+
+    public function deleteAll()
+    {
+        $sql = "delete * from ApiLogs";
+        $this->query($sql);
+    }
 }

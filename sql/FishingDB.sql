@@ -93,7 +93,7 @@ create table Friend (
 
 create table ApiLogs(
     successState bool,
-    message varchar(255)
+    message text
 );
 
 alter table Friend
