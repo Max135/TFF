@@ -82,7 +82,7 @@ class TffController extends Controller
 
     public function renderFishPage($id) {
         return $this->render('fish', [
-            'fishes' => (new FishBroker())->GetAllFishesFromHotspot($id)
+            'fishes' => (new FishBroker())->getAllFishFromHotspot($id)
         ]);
     }
 

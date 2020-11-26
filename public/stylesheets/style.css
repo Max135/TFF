@@ -325,3 +325,14 @@ body {
 tspan {
     fill: white;
 }
+
+.content-container {
+    margin-top: 70px;
+}
+
+.image-padding-color {
+    /*background-color: #1d232b !important;*/
+    /*background-color: #1d1f24 !important;*/
+    background-color: #222a30 !important;
+    border-radius: 10px;
+}

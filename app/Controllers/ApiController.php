@@ -48,6 +48,41 @@ class ApiController extends Controller
         $catchId = (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
         $pictureName = $this->savePicture();
         (new FishBroker())->insert($catchId, $species, $weight, $pictureName);
+
+        return $this->json($this->makeCatchObject($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat, $species, $weight, $catchId, $pictureName));
+    }
+
+    /**
+     * Meant for api tests
+     *
+     * @param $tripId
+     * @param $temp
+     * @param $pres
+     * @param $hum
+     * @param $time
+     * @param $lng
+     * @param $lat
+     * @param $species
+     * @param $weight
+     * @param $id
+     * @param $pic
+     * @return stdClass
+     */
+    private function makeCatchObject($tripId, $temp, $pres, $hum, $time, $lng, $lat, $species, $weight, $id, $pic) {
+        $obj = new stdClass();
+        $obj->tripId = $tripId;
+        $obj->temperature = $temp;
+        $obj->pressure = $pres;
+        $obj->humidity = $hum;
+        $obj->time = $time;
+        $obj->lng = $lng;
+        $obj->lat = $lat;
+        $obj->species = $species;
+        $obj->weight = $weight;
+        $obj->catchId = $id;
+        $obj->picture = $pic;
+
+        return $obj;
     }
 
     /**
@@ -55,9 +90,10 @@ class ApiController extends Controller
      */
     public function savePicture()
     {
-        $targetDir = "assets/images/" .time() . str_replace(" ", "_", basename($_FILES['file']['name']));
+        $pictureName = time() . str_replace(" ", "_", basename($_FILES['file']['name']));
+        $targetDir = "assets/images/" . $pictureName;
         if (move_uploaded_file($_FILES['file']['tmp_name'], $targetDir)) {
-            return $this->json($targetDir);
+            return $pictureName;
         }
         return null;
     }
@@ -72,10 +108,11 @@ class ApiController extends Controller
         $userId = $this->getPostValue('userId');
         $bites = $this->getPostValue('bites');
         $hooks = $this->getPostValue('hooks');
+        $throws = $this->getPostValue('throws');
         $dateStart = $this->getPostValue('dateStart');
         $dateEnd = $this->getPostValue('dateEnd');
 
-        $tripId = (new TripBroker())->insert($userId, $bites, $hooks, $dateStart, $dateEnd);
+        $tripId = (new TripBroker())->insert($userId, $bites, $hooks, $throws, $dateStart, $dateEnd);
 
         return $this->json($tripId);
     }
@@ -85,11 +122,12 @@ class ApiController extends Controller
      */
     public function updatePostTrip()
     {
+        $id = $this->getPostValue('tripId');
         $bites = $this->getPostValue('bites');
         $hooks = $this->getPostValue('hooks');
         $dateEnd = $this->getPostValue('dateEnd');
 
-
+        (new TripBroker())->update($id, $bites, $hooks, $dateEnd);
     }
 
     /**
