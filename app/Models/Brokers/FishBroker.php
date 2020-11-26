@@ -14,8 +14,8 @@ class FishBroker extends Broker
         return $this->selectSingle($sql, [$fishId])->picturePath;
     }
 
-    public function getAllFishesFromHotspot($hotspotId) {
-        $sql = "Select C.time, F.species, F.weight, F.picturePath From Catch C Join Fish F on C.id = F.catchId Where hotspotId = 3";
+    public function getAllFishFromHotspot($hotspotId) {
+        $sql = "Select C.time, F.species, F.weight, F.picturePath From Catch C Join Fish F on C.id = F.catchId Where hotspotId = ?";
         return $this->select($sql, [$hotspotId]);
     }
 }

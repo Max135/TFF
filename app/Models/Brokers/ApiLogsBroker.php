@@ -14,9 +14,15 @@ class ApiLogsBroker extends Broker
         return $this->select($sql);
     }
 
+    public function findAllBySuccess(bool $success)
+    {
+        $sql = "select * from ApiLogs where successState = ?";
+        return $this->select($sql, [$success]);
+    }
+
     public function deleteAll()
     {
-        $sql = "delete * from ApiLogs";
+        $sql = "delete from ApiLogs";
         $this->query($sql);
     }
 }
