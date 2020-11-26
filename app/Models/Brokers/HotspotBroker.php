@@ -62,6 +62,17 @@ class HotspotBroker extends Broker
     }
 
     /**
+     * Returns all of the users hotspots with the last day visited
+     *
+     * @param $userId
+     * @return \stdClass[]
+     */
+    public function getHotspotsInfoForPermissions($userId) {
+        $sql = "Select H.id, X(H.coordinates) as lon, Y(H.coordinates) as lat, H.isShared ,MAX(C.time) as lastTime From Hotspot H Join Catch C on H.id = C.hotspotId Where H.userId = ? GROUP BY H.id, lon, lat";
+        return $this->select($sql, [$userId]);
+    }
+
+    /**
      * For getting the list of avg pressure of each trip in the hotspot
      *
      * @param $hotspotId
@@ -83,6 +94,17 @@ class HotspotBroker extends Broker
                     From Catch C Join Trip T On C.tripId = T.id Join Hotspot H On C.hotspotId = H.id Join Winds W on C.id = W.catchId
                         Where H.id = ? GROUP BY T.id;";
         return $this->select($sql, [$hotspotId]);
+    }
+
+    /**
+     * Changes the permission of the hotspot to its opposite
+     *
+     * @param $hotspotId
+     * @return \stdClass|null
+     */
+    public function changePerm($hotspotId) {
+        $sql = "Update Hotspot Set isShared = not isShared where id = ?";
+        return $this->selectSingle($sql, [$hotspotId]);
     }
 
     /**

@@ -10,7 +10,7 @@ insert into Hotspot values (default, 1, date('2008-10-29 14:56:59'), false, poin
 
 insert into Trip values (default, 1, 3, 3, 3, date('2008-10-29 14:56:59'), date('2008-11-11 11:12:01'));
 
-insert into Catch values (default, 1, 1, 1, 1, 1, date('2008-11-11 11:12:01'), point(46.057216, -72.824669));
+insert into Catch values (default, 1, 1, 1, 1, 1, date('2008-11-12 11:12:01'), point(46.057216, -72.824669));
 insert into Winds values (default, 1, 1, 'N');
 insert into Fish values (default, 1, 'Salmon', 15, null);
 
@@ -18,7 +18,7 @@ insert into Catch values (default, 1, 1, 1, 1, 1, date('2008-11-11 11:11:11'), p
 insert into Winds values (default, 2, 5, 'N');
 insert into Fish values (default, 2, 'Perch', 2, null);
 
-insert into Catch values (default, 1, 1, 1, 1, 1, date('2008-11-11 11:13:11'), point(46.057236, -72.824689));
+insert into Catch values (default, 1, 1, 1, 1, 1, date('2008-11-10 11:13:11'), point(46.057236, -72.824689));
 insert into Winds values (default, 3, 2, 'W');
 insert into Fish values (default, 3, 'Trout', 20, null);
 

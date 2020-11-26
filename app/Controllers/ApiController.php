@@ -27,6 +27,7 @@ class ApiController extends Controller
         $this->get("/api/logs/successful", "showSuccessfulLogs");
         $this->get("/api/logs/unsuccessful", "showUnSuccessfulLogs");
         $this->get("/api/logs/clear", "clearLogs");
+        $this->get("/api/changePerm", "switchPerm");
     }
 
     /**
@@ -239,6 +240,16 @@ class ApiController extends Controller
         $user->username = "";
         $user->picturePath = "";
         return $user;
+    }
+
+    /**
+     * Route to switch the permission of a hotspot (if it gets shared or not)
+     *
+     */
+    public function switchPerm() {
+        $hotspotId = $_GET['hotspotId'];
+        (new HotspotBroker())->changePerm($hotspotId);
+        return $this->json(1);
     }
 
     /**

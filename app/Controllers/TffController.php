@@ -21,6 +21,7 @@ class TffController extends Controller
         $this->get('/winds/{id}', 'renderWindsPage');
         $this->get('/store', 'renderStore');
         $this->get('/fish/{id}', 'renderFishPage');
+        $this->get('/permissions', 'renderPermissionPage');
     }
 
 //    public function before(): ?Response
@@ -83,6 +84,12 @@ class TffController extends Controller
     public function renderFishPage($id) {
         return $this->render('fish', [
             'fishes' => (new FishBroker())->getAllFishFromHotspot($id)
+        ]);
+    }
+
+    public function renderPermissionPage() {
+        return $this->render('permissions', [
+            'hotspots' => (new HotspotBroker())->getHotspotsInfoForPermissions(Session::getInstance()->read('id'))
         ]);
     }
 

@@ -326,6 +326,29 @@ tspan {
     fill: white;
 }
 
+/* PERMISSION PAGE */
+
+.darkBox {
+    width: 20rem;
+    /*background-color: #222a30;*/
+    border-radius: 15px;
+    background-color: #1d1f24;
+    /*background-color: #181d24;*/
+}
+
+.hotspotCoordPerm {
+    color: #6c757d;
+    font-size: 0.8rem;
+}
+
+.permsTitle {
+    color: whitesmoke;
+}
+
+.switchButton {
+    font-size: 2rem;
+}
+
 .content-container {
     margin-top: 70px;
 }
