@@ -4,7 +4,6 @@ function addEventListenerToButton(hotspotId)
         var req = new XMLHttpRequest();
         req.onreadystatechange = function () {
             if (req.readyState == 4 && req.status == 200) {
-                alert("hi");
                 var answer = JSON.parse(req.response);
                 var switchOn = document.getElementById('switchIcon' + hotspotId).classList.contains("fa-toggle-on");
                 if (switchOn) {

@@ -104,7 +104,7 @@ class HotspotBroker extends Broker
      */
     public function changePerm($hotspotId) {
         $sql = "Update Hotspot Set isShared = not isShared where id = ?";
-        return $this->selectSingle($sql, [$hotspotId]);
+        $this->query($sql, [$hotspotId]);
     }
 
     /**

@@ -249,7 +249,7 @@ class ApiController extends Controller
     public function switchPerm() {
         $hotspotId = $_GET['hotspotId'];
         (new HotspotBroker())->changePerm($hotspotId);
-        return $this->json(1);
+        return $this->json("1");
     }
 
     /**
