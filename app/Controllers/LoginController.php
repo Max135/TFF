@@ -103,7 +103,6 @@ class LoginController extends \Zephyrus\Application\Controller
     private function validateSignupForm($form)
     {
         $form->validate('username', Rule::notEmpty('username empty'));
-        $form->validateWhenFieldHasNoError('username', Rule::alpha('Wtf username', false));
 
         $form->validate('password', Rule::notEmpty('empty password dumdum'));
         $form->validateWhenFieldHasNoError('password', Rule::passwordCompliant('Bad password'));
