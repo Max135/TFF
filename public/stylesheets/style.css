@@ -359,3 +359,10 @@ tspan {
     background-color: #222a30 !important;
     border-radius: 10px;
 }
+
+.fish-picture {
+    display: block;
+    max-height:465px;
+    width: 100%;
+    height: auto;
+}

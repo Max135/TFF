@@ -2,16 +2,11 @@ extends navbar
 
 block content
   body
-    .container.content-container
-      .row.card-deck.justify-content-start
+    .content-container
+      .row.card-deck.justify-content-start.gallery
         each fish in fishes
-          .gallery
-            div
-              .image-padding-color.image.fit
-                div
-                  if (fish.picturePath == null)
-                    img(src='/assets/images/nemo.jpg' alt='Not found')
-                  else
-                    img(src='/assets/images/' + fish.picturePath alt='Not found')
-                  .row
-                    .col-sm-6
+          .image-padding-color.image.fit.col-md-5(style="margin: 50px;")
+            if (fish.picturePath == null)
+              img(src='/assets/images/4k_Placeholder.jpg' alt='Not found').fish-picture
+            else
+              img(src='/assets/images/' + fish.picturePath alt='Not found').fish-picture
