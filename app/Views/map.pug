@@ -161,9 +161,15 @@ block content
         br
 
         .row.justify-content-center
-          .justify-content-center.text-center
-            a(href="/winds/" + hotspotInfo.id)
-              i.fas.fa-wind.windIcon
-              br
-            span#windIndicator=hotspotInfo.avgWindSpeed + " mph"
-
+          .col-sm-6
+            .justify-content-center.text-center
+              a(href="/winds/" + hotspotInfo.id)
+                i.fas.fa-wind.windIcon
+                br
+              span#windIndicator=hotspotInfo.avgWindSpeed + " mph"
+          .col-sm-6
+            .justify-content-center.text-center
+              a(href="/fish/" + hotspotInfo.id)
+                i.fas.fa-camera.windIcon
+                br
+              span Pictures

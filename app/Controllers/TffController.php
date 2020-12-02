@@ -81,9 +81,9 @@ class TffController extends Controller
         return $this->render('store');
     }
 
-    public function renderFishPage($id) {
+    public function renderFishPage($hotspotId) {
         return $this->render('fish', [
-            'fishes' => (new FishBroker())->getAllFishFromHotspot($id)
+            'fishes' => (new FishBroker())->getAllFishFromHotspot($hotspotId)
         ]);
     }
 
