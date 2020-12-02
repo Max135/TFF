@@ -10,3 +10,7 @@ block content
               img(src='/assets/images/4k_Placeholder.jpg' alt='Not found').fish-picture
             else
               img(src='/assets/images/' + fish.picturePath alt='Not found').fish-picture
+            .row.d-flex.justify-content-between
+              p="Time: " + fish.time
+              p="Species: " + fish.species
+              p="Weight: " + fish.weight
