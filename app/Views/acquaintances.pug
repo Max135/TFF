@@ -31,7 +31,7 @@ block content
                 tr
                   td=friend.username
                   td.text-right
-                    a(href="/friendsMap").mr-2
+                    a(href="/friendsMap/" + friend.id).mr-2
                       i.fas.fa-map-marked-alt.friendIcon
                     a(href="/removeFriend/" + friend.id).mr-2
                       i.fas.fa-trash.friendIcon

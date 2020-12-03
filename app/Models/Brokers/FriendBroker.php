@@ -3,7 +3,7 @@
 class FriendBroker extends Broker
 {
     public function getFriends($userId) {
-        $sql = "Select F.userTwo, U.username From Friend F JOIN User U On F.userTwo = U.id WHERE userOne = ?";
+        $sql = "Select F.userTwo as id, U.username From Friend F JOIN User U On F.userTwo = U.id WHERE userOne = ?";
         return $this->select($sql, [$userId]);
     }
 

@@ -28,6 +28,8 @@ class TffController extends Controller
         $this->get('/fish/{id}', 'renderFishPage');
         $this->get('/permissions', 'renderPermissionPage');
         $this->get('/removeFriend/{id}', 'removeFriend');
+        $this->get('/friendsMap/{id}', 'renderFriendsMap');
+        $this->get('/friendsMapOn/{coords}/{hotspotId}', 'centerOnFriendsHotspot');
 
         $this->post('/friends', 'addFriend');
     }
@@ -120,6 +122,30 @@ class TffController extends Controller
     public function removeFriend($friendId) {
         (new FriendBroker())->removeFriend(Session::getInstance()->read('id'), $friendId);
         return $this->redirect('/friends');
+    }
+
+    public function renderFriendsMap($friendId) {
+        Session::getInstance()->set('friendId', $friendId);
+        return $this->render("friendsMap", [
+            'title' => 'Map',
+            'userId' => $friendId,
+            'mapWidth' => "col-12",
+            'center' => [-72.88, 45.62],
+            'hotspotInfo' => null,
+            'pressureList' => null
+        ]);
+    }
+
+    public function centerOnFriendsHotspot($coords, $hotspotId) {
+        $splitted = explode(",", $coords);
+        return $this->render("friendsMap", [
+            'title' => 'Map',
+            'userId' => Session::getInstance()->read('friendId'),
+            'mapWidth' => "col-9",
+            'center' => [floatval($splitted[0]), floatval($splitted[1])],
+            'hotspotInfo' => $this->buildHotspotInfo($hotspotId),
+            'pressureList' => (new HotspotBroker())->getListOfPressures($hotspotId)
+        ]);
     }
 
     private function validForm(Form $form) {

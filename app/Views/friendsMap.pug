@@ -1,0 +1,175 @@
+extends navbar
+
+block content
+  body
+    .row
+      .m-0.p-0#mapContainer(class=mapWidth)
+      div#map
+      script(nonce=nonce()).
+          var userId = #{userId};
+          var centerCoord = #{center};
+          var req = new XMLHttpRequest();
+          req.onreadystatechange = function () {
+              if (req.readyState == 4 && req.status == 200) {
+                  mapboxgl.accessToken = 'pk.eyJ1Ijoid29vbnRvcG9saXMiLCJhIjoiY2tnYXoxMGVkMDgzMjJ2bTVqeTRrY2FuaiJ9.hg2PeuwIn4SPCMEFLt7mbw';
+                  var map = new mapboxgl.Map({
+                      container: 'map',
+                      style: 'mapbox://styles/mapbox/streets-v11',
+                      center: centerCoord, // Long, Lat
+                      zoom: 8
+                  });
+
+                  map.on('load', function () {
+                      map.addSource('10m-bathymetry-81bsvj', {
+                          type: 'vector',
+                          url: 'mapbox://mapbox.9tm8dx88'
+                      });
+                      map.addLayer(
+                          {
+                              'id': '10m-bathymetry-81bsvj',
+                              'type': 'fill',
+                              'source': '10m-bathymetry-81bsvj',
+                              'source-layer': '10m-bathymetry-81bsvj',
+                              'layout': {},
+                              'paint': {
+                                  'fill-outline-color': 'hsla(337, 82%, 62%, 0)',
+                                  // cubic bezier is a four point curve for smooth and precise styling
+                                  // adjust the points to change the rate and intensity of interpolation
+                                  'fill-color': [
+                                      'interpolate',
+                                      ['cubic-bezier', 0, 0.5, 1, 0.5],
+                                      ['get', 'DEPTH'],
+                                      200,
+                                      '#78bced',
+                                      9000,
+                                      '#15659f'
+                                  ]
+                              }
+                          },
+                          'land-structure-polygon'
+                      );
+                      var hotspotsInfo = JSON.parse(req.response);
+                      var hotspotsArray = [];
+                      console.log(hotspotsInfo);
+                      for (var hotspot of hotspotsInfo) {
+                          hotspotsArray.push(createHotspot(hotspot))
+                      }
+                      map.loadImage(
+                          '/stylesheets/images/marker.png',
+                          function (error, image) {
+                              if (error) throw error;
+                              map.addImage('custom-marker', image);
+                              map.addSource('point', {
+                                  'type': 'geojson',
+                                  'data': {
+                                      'type': 'FeatureCollection',
+                                      'features': hotspotsArray,
+                                  }
+                              });
+                              map.addLayer({
+                                  'id': 'symbols',
+                                  'type': 'symbol',
+                                  'source': 'point',
+                                  'layout': {
+                                      'icon-image': 'custom-marker',
+                                      'icon-size': 0.25
+                                  }
+                              });
+                              map.on('click', 'symbols', function (e) {
+                                  map.flyTo({
+                                      center: e.features[0].geometry.coordinates
+                                  });
+                                  var hotspotId = getHotspotId(e.features[0].geometry.coordinates, hotspotsInfo);
+                                  var uri = "/friendsMapOn/" + e.features[0].geometry.coordinates + "/" + hotspotId;
+                                  var enc = encodeURI(uri);
+                                  var dec = decodeURI(enc);
+                                  location.pathname = dec;
+                              });
+                          }
+                      );
+                  })
+              }
+              function createHotspot(item) {
+                  var hotspot = {
+                      type : 'Feature',
+                      geometry: {
+                          type: 'Point',
+                          coordinates: [item.lon, item.lat]
+                      }
+                  }
+                  return hotspot;
+              }
+
+              function getHotspotId(coords, hotpotsInfo) {
+                  var long = coords[0].toString();
+                  long = long.substring(0, long.indexOf(".") + 4)
+                  var lat = coords[1].toString();
+                  lat = lat.substring(0, lat.indexOf(".") + 4)
+                  for (var hotspot of hotpotsInfo) {
+                      var stringLong = hotspot.lon.toString();
+                      var stringLat = hotspot.lat.toString();
+                      var searchedLong = stringLong.substring(0, stringLong.indexOf(".") + 4)
+                      var searchedLat = stringLat.substring(0, stringLat.indexOf(".") + 4)
+                      if (searchedLong == long && searchedLat == lat) {
+                          return hotspot.id;
+                      }
+                  }
+              }
+          }
+          var url = location.protocol + "//" + location.hostname + "/api/friendsHotspots?userId=" + userId;
+          req.open("GET", url, true);
+          req.send();
+
+      .col-3.m-0.p-0#infoContainer
+        -var hotspotInfo = hotspotInfo
+        .row.w-100.justify-content-center
+          .h1#hotspotTitle="Hotspot"
+
+        .row.justify-content-between
+          span.hotspotCoord.p-0="Lat: " + hotspotInfo.lat
+          span.hotspotCoord.p-0="Long: " + hotspotInfo.lon
+
+        .row.justify-content-between.mt-2
+          .justify-content-center.text-center
+            i.fas.fa-fish.hotspotIcon
+            br
+            span=hotspotInfo.catches
+          .justify-content-center.text-center
+            i.fas.fa-drumstick-bite.hotspotIcon
+            br
+            span=hotspotInfo.nbBites
+          .justify-content-center.text-center
+            i.fa.fa-candy-cane.hotspotIcon.icon-flipped
+            br
+            span=hotspotInfo.nbHooks
+
+        br
+        br
+        .row.justify-content-center.m-2
+          table(data-toggle='table' data-search='true' data-show-columns='true' data-pagination="true"
+            data-side-pagination="server" data-page-list="[10, 25, 50, 100, 200, All]")
+            thead
+              tr.tr-class-1
+                th(data-field='name' rowspan='2' data-valign='middle').grayColor Date
+                th(data-field='star').text-right.grayColor Avg Pressure
+            tbody
+              if (pressureList != null)
+                  each pressure in pressureList
+                    tr
+                      td=format('date', pressure.tripDate)
+                      td.text-right=pressure.avgPressure
+        br
+
+        .row.justify-content-center
+          .col-sm-6
+            .justify-content-center.text-center
+              a(href="/winds/" + hotspotInfo.id)
+                i.fas.fa-wind.windIcon
+                br
+              span#windIndicator=hotspotInfo.avgWindSpeed + " mph"
+          .col-sm-6
+            .justify-content-center.text-center
+              a(href="/fish/" + hotspotInfo.id)
+                i.fas.fa-camera.windIcon
+                br
+              span Pictures

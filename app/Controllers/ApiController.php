@@ -21,6 +21,7 @@ class ApiController extends Controller
         $this->post('/api/image', 'savePicture');
         $this->get('/api/image', 'savePicture');
         $this->get('/api/hotspots', 'getUsersHotspots');
+        $this->get('/api/friendsHotspots', 'getFriendsHotspots');
         $this->get('/api/hotspotWinds', 'getHotspotWinds');
 
         $this->get("/api/logs", 'showLogs');
@@ -154,6 +155,12 @@ class ApiController extends Controller
         return $this->json($result);
     }
 
+    public function getFriendsHotspots() {
+        $userId = $_GET['userId'];
+        $result = (new HotspotBroker())->getSharedHotspots($userId);
+        return $this->json($result);
+    }
+
     /**
      * To insert an array of catches
      */
@@ -225,6 +232,7 @@ class ApiController extends Controller
         (new ApiLogsBroker())->deleteAll();
         return $this->redirect("/api/logs");
     }
+
 
     /**
      * Create a mock user to respond to authenticate route

@@ -108,6 +108,16 @@ class HotspotBroker extends Broker
     }
 
     /**
+     * Gets all the hotspots that are shared
+     * @param $userId
+     * @return \stdClass[]
+     */
+    public function getSharedHotspots($userId) {
+        $sql = "select id, X(coordinates) as lat, Y(coordinates) as lon from Hotspot where userId = ? and isShared";
+        return $this->select($sql, [$userId]);
+    }
+
+    /**
      * Returns the avg wind speed for each trip in the hotspot
      *
      * @param $hotspotId
