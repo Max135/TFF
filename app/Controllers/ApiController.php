@@ -188,6 +188,17 @@ class ApiController extends Controller
     }
 
     /**
+     * NOT DONE YET
+     */
+    public function callWindApi()
+    {
+        // api-key : crHg9RN912tS97pM7pLldK40bvWEqUdS
+        $lat = "lat=46.0428";
+        $lon = "lon=73.1123";
+        //https://api.climacell.co/v3/weather/nowcast?lat=46.0428&lon=73.1123&unit_system=si&timestep=5&start_time=now&fields=wind_speed&apikey=crHg9RN912tS97pM7pLldK40bvWEqUdS
+    }
+
+    /**
      *  Prints all data from ApiLogs
      */
     public function showLogs()
