@@ -4,4 +4,37 @@ block content
   body
     #page-container
       .row.justify-content-center
-        .well.text-center="Here you will find that all your fisherman friends are listed. From here u can add a new fisherman friend, maybe one you've met recently. You can also visit a fellow fishers hotspot card to see how good a fisher he truly is"
+        .well.text-center="Here you will find that all your fisherman friends are listed. From here u can add a new fisherman friend, maybe one you've met recently. You can also visit a fellow fishers hotspot card to see how good a fisherman he truly is"
+
+      br
+      .row.w25.justify-content-center
+        +flash
+      .row.justify-content-center
+        +form("post", "/friends")
+          .form-inline
+            .form-group
+              .form-label-group.formField
+                input(id="id_email" type="text" name="friendEmail" class="form-control login-form-border" placeholder="email" style="padding-left:33px;").formField
+            .form-inline.justify-content-between.ml-2
+              button.btn.btn-lg.form-button.text-uppercase Add Friend
+
+      br
+      .row.m-2.d-flex.justify-content-center
+        table(data-toggle='table' data-search='true' data-show-columns='true' data-pagination="true"
+          data-side-pagination="server" data-page-list="[10, 25, 50, 100, 200, All]").w-25
+          thead
+            tr.tr-class-1
+              th(data-field='name' rowspan='2' data-valign='middle').grayColor Friend
+              th(data-field='star').text-right.grayColor Options
+          tbody
+              each friend in friendsList
+                tr
+                  td=friend.username
+                  td.text-right
+                    a(href="/friendsMap").mr-2
+                      i.fas.fa-map-marked-alt.friendIcon
+                    a(href="/removeFriend/" + friend.id).mr-2
+                      i.fas.fa-trash.friendIcon
+
+
+

@@ -18,6 +18,12 @@ class UserBroker extends Broker
         return $this->selectSingle($sql, [$id]);
     }
 
+    public function isValidEmail($email) {
+        $sql = "Select username From User where email = ?";
+        $result = $this->selectSingle($sql, [$email]);
+        return !is_null($result);
+    }
+
     public function findId(string $email): ?int
     {
         $sql = "select id from User where email = ?;";

@@ -276,6 +276,15 @@ body {
     color: gray;
 }
 
+.friendIcon {
+    color: whitesmoke;
+    transition: 0.3s
+}
+
+.friendIcon:hover {
+    color: hotpink;
+}
+
 /* WIND CHART */
 #container {
     min-height: 500px;

@@ -1,9 +1,14 @@
 <?php namespace Controllers;
 
 use Models\Brokers\FishBroker;
+use Models\Brokers\FriendBroker;
 use Models\Brokers\HotspotBroker;
+use Models\Brokers\UserBroker;
 use Models\TableObject;
 use phpDocumentor\Reflection\Types\Array_;
+use Zephyrus\Application\Flash;
+use Zephyrus\Application\Form;
+use Zephyrus\Application\Rule;
 use Zephyrus\Application\Session;
 use Zephyrus\Network\Response;
 
@@ -22,6 +27,9 @@ class TffController extends Controller
         $this->get('/store', 'renderStore');
         $this->get('/fish/{id}', 'renderFishPage');
         $this->get('/permissions', 'renderPermissionPage');
+        $this->get('/removeFriend/{id}', 'removeFriend');
+
+        $this->post('/friends', 'addFriend');
     }
 
 //    public function before(): ?Response
@@ -35,7 +43,10 @@ class TffController extends Controller
 
     public function renderAcquaintances()
     {
-        return $this->render('acquaintances');
+        $friendsList = (new FriendBroker())->getFriends(Session::getInstance()->read('id'));
+        return $this->render('acquaintances', [
+            'friendsList' => $friendsList
+        ]);
     }
 
     public function renderHub()
@@ -91,6 +102,34 @@ class TffController extends Controller
         return $this->render('permissions', [
             'hotspots' => (new HotspotBroker())->getHotspotsInfoForPermissions(Session::getInstance()->read('id'))
         ]);
+    }
+
+    public function addFriend() {
+        $form = $this->buildForm();
+        if (!$this->validForm($form)) {
+            Flash::error($form->getErrorMessages());
+        }
+        if ($this->validEmail($form->buildObject()->friendEmail)) {
+            (new FriendBroker())->addFriend(Session::getInstance()->read('id'), $form->buildObject()->friendEmail);
+        } else {
+            Flash::error("No user has that email");
+        }
+        return $this->redirect('/friends');
+    }
+
+    public function removeFriend($friendId) {
+        (new FriendBroker())->removeFriend(Session::getInstance()->read('id'), $friendId);
+        return $this->redirect('/friends');
+    }
+
+    private function validForm(Form $form) {
+        $form->validate('friendEmail', Rule::notEmpty("Pls enter an email"));
+        $form->validate('friendEmail', Rule::email("The entry is not an email"));
+        return $form->verify();
+    }
+
+    private function validEmail($email) {
+        return (new UserBroker())->isValidEmail($email);
     }
 
     private function buildProjectTable($data) {
