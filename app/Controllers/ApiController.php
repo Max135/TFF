@@ -6,6 +6,7 @@ use Models\Brokers\FishBroker;
 use Models\Brokers\HotspotBroker;
 use Models\Brokers\TripBroker;
 use Models\Brokers\UserBroker;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 use stdClass;
 use Zephyrus\Network\Response;
 
@@ -29,6 +30,7 @@ class ApiController extends Controller
         $this->get("/api/logs/unsuccessful", "showUnSuccessfulLogs");
         $this->get("/api/logs/clear", "clearLogs");
         $this->get("/api/changePerm", "switchPerm");
+        $this->post("/api/fetch-wind-data", "getWindValue");
     }
 
     /**
@@ -195,6 +197,25 @@ class ApiController extends Controller
     }
 
     /**
+     * [POST: /api/fetch-wind-data]
+     * Responds with the wind value (speed/direction) from the specified lat and lon params
+     *
+     * @return Response
+     */
+    public function getWindValue()
+    {
+        if (isset($_POST['lat']) && isset($_POST['lon'])) {
+            $lat = $this->getPostValue('lat');
+            $lon = $this->getPostValue('lon');
+            $result = $this->callWindApi($lat, $lon);
+            $wind = $this->generateWindResponse($result);
+            return $this->json($wind);
+        } else {
+            return $this->json($this->generateErrorWind());
+        }
+    }
+
+    /**
      *  Prints all data from ApiLogs
      */
     public function showLogs()
@@ -271,5 +292,100 @@ class ApiController extends Controller
         }
 
         return null;
+    }
+
+    /**
+     * Calls the wind API and returns it's result in an array of associative arrays
+     * https://stackoverflow.com/a/9802854
+     *
+     * api-key : crHg9RN912tS97pM7pLldK40bvWEqUdS
+     * route example : https://api.climacell.co/v3/weather/realtime?lat=46.0428&lon=-73.1123&unit_system=si&fields=wind_direction%2Cwind_speed&apikey=crHg9RN912tS97pM7pLldK40bvWEqUdS
+     *
+     * @param $lat
+     * @param $lon
+     * @return mixed
+     */
+    private function callWindApi($lat, $lon)
+    {
+        $baseUrl = "https://api.climacell.co/v3/weather/realtime";
+        $apikey = "crHg9RN912tS97pM7pLldK40bvWEqUdS";
+        $unit_system = "si";
+        $fields = ["wind_speed", "wind_direction"];
+        $data = [
+            'lat' => $lat,
+            'lon' => $lon,
+            'unit_system' => $unit_system,
+            'fields' => $fields,
+            'apikey' => $apikey
+        ];
+
+        $url = sprintf("%s?%s", $baseUrl, http_build_query($data));
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        $result = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($result, true);
+    }
+
+    /**
+     * Generates and format the wind object to send as response
+     *
+     * @param $element
+     * @return stdClass
+     */
+    private function generateWindResponse($element)
+    {
+        $wind = new stdClass();
+//        $windSpeed = $element['wind_speed']['value'] // gets the original wind speed value;
+//        $windUnit = $element['wind_speed']['units']; // gets the original wind speed unit
+        $windSpeed = $this->convertWindSpeedUnit(floatval($element['wind_speed']['value']));
+        $windUnit = 'km/h';
+        $windDegree = floatval($element['wind_direction']['value']);
+        $windDirection = $this->getWindDirection($windDegree);
+        $wind->value = $windDirection . " " . $windSpeed . " " . $windUnit;
+        return $wind;
+    }
+
+    /**
+     * Converts the original wind speed value from m/s to km/h
+     *
+     * @param $mpsSpeed
+     * @return string
+     */
+    private function convertWindSpeedUnit($mpsSpeed)
+    {
+        $kphSpeed = $mpsSpeed / 0.2777778;
+        return number_format($kphSpeed, 1);
+    }
+
+    /**
+     * Determines the wind direction acronym from it's degree (out of 360)
+     * https://gist.github.com/smallindine/d227743c28418f3426ed36b8969ded1a#gistcomment-2973520
+     * @param $deg
+     * @return string
+     */
+    private function getWindDirection($deg)
+    {
+        $directions = array('N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO','N2');
+        $cardinal = $directions[round($deg / 22.5)];
+        if($cardinal == 'N2') {
+            $cardinal = 'N';
+        }
+
+        return $cardinal;
+    }
+
+    /**
+     * Generates an "error" wind response
+     *
+     * @return stdClass
+     */
+    private function generateErrorWind()
+    {
+        $errorWind = new stdClass();
+        $errorWind->value = "ERROR";
+        return $errorWind;
     }
 }
