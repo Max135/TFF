@@ -25,7 +25,46 @@ block content
                           .row.justify-content-between
                             span.hotspotCoordPerm.p-0="Lat: " + hotspot.lat
                             span.hotspotCoordPerm.p-0="Long: " + hotspot.lon
-
+                          .row.justify-content-center
+                            .smallMapContainer(id="smallMap" + hotspot.id).p-0
+                            script.
+                                var id = #{hotspot.id};
+                                var long = #{hotspot.lon};
+                                var lat = #{hotspot.lat};
+                                var coord = [long, lat];
+                                console.log(coord)
+                                mapboxgl.accessToken = 'pk.eyJ1Ijoid29vbnRvcG9saXMiLCJhIjoiY2tnYXoxMGVkMDgzMjJ2bTVqeTRrY2FuaiJ9.hg2PeuwIn4SPCMEFLt7mbw';
+                                var map = new mapboxgl.Map({
+                                    container: 'smallMap' + id,
+                                    style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
+                                    center: [lat, long], // starting position [lng, lat]
+                                    zoom: 11 // starting zoom
+                                });
+                                map.on('load', function () {
+                                    map.loadImage(
+                                        '/stylesheets/images/marker2.png',
+                                        function (error, image2) {
+                                            if (error) throw error;
+                                            map.addImage('custom-marker2', image2);
+                                            map.addSource('point', {
+                                                'type': 'geojson',
+                                                'data': {
+                                                    'type': 'FeatureCollection',
+                                                    'features': [lat, long],
+                                                }
+                                            });
+                                            map.addLayer({
+                                                'id': 'symbols',
+                                                'type': 'symbol',
+                                                'source': 'point',
+                                                'layout': {
+                                                    'icon-image': 'custom-marker2',
+                                                    'icon-size': 0.25
+                                                }
+                                            });
+                                        }
+                                    );
+                                })
                           br
 
                           footer.align-center

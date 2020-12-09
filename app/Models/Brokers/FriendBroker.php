@@ -17,5 +17,6 @@ class FriendBroker extends Broker
     public function removeFriend($userId, $friendId) {
         $sql = "DELETE FROM Friend WHERE userOne = ? and userTwo = ?";
         $this->query($sql, [$userId, $friendId]);
+        $this->query($sql, [$friendId, $userId]);
     }
 }

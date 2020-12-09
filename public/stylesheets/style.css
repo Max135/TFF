@@ -202,7 +202,19 @@ body {
     color: hotpink;
 }
 
+.mapboxgl-ctrl-attrib-inner {
+    display: none;
+}
+
 /* MAP */
+
+.smallMapContainer {
+    position: relative;
+    top: 0;
+    bottom: 0;
+    width: 100% !important;
+    height: 50% !important;
+}
 
 #map {
     position: absolute;
@@ -249,7 +261,9 @@ body {
 
 .hotspotIcon {
     font-size: 2rem;
-    color: #cce5ff
+    color: #cce5ff;
+    height: 2rem;
+    width: auto;
 }
 
 .hotspotItem {
