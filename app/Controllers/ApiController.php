@@ -19,6 +19,7 @@ class ApiController extends Controller
         $this->post("/api/catch", "apiPostCatch");
         $this->post("/api/catches", "apiPostCatches");
         $this->post('/api/trip', 'apiPostTrip');
+        $this->post('/api/end-trip', 'updatePostTrip');
 
         $this->post('/api/image', 'savePicture');
         $this->get('/api/image', 'savePicture');
@@ -125,9 +126,9 @@ class ApiController extends Controller
         $id = $this->getPostValue('tripId');
         $bites = $this->getPostValue('bites');
         $hooks = $this->getPostValue('hooks');
-        $dateEnd = $this->getPostValue('dateEnd');
+//        $dateEnd = $this->getPostValue('dateEnd');
 
-        (new TripBroker())->update($id, $bites, $hooks, $dateEnd);
+        (new TripBroker())->update($id, $bites, $hooks);
     }
 
     /**

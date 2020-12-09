@@ -9,9 +9,9 @@ class TripBroker extends Broker
         return $this->getDatabase()->getLastInsertedId();
     }
 
-    public function update($tripId, $bites, $hooks, $dateEnd)
+    public function update($tripId, $bites, $hooks)
     {
         $sql = "update Trip set bites = ?, hooks = ?, dateTimeEnd = current_time where id = ?";
-        $this->query($sql, [$bites, $hooks, $dateEnd, $tripId]);
+        $this->query($sql, [$bites, $hooks, $tripId]);
     }
 }
