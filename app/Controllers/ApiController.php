@@ -19,6 +19,7 @@ class ApiController extends Controller
         $this->post("/api/catch", "apiPostCatch");
         $this->post("/api/catches", "apiPostCatches");
         $this->post('/api/trip', 'apiPostTrip');
+
         $this->post('/api/image', 'savePicture');
         $this->get('/api/image', 'savePicture');
         $this->get('/api/hotspots', 'getUsersHotspots');
@@ -110,13 +111,8 @@ class ApiController extends Controller
     public function apiPostTrip()
     {
         $userId = $this->getPostValue('userId');
-        $bites = $this->getPostValue('bites');
-        $hooks = $this->getPostValue('hooks');
-        $throws = $this->getPostValue('throws');
-        $dateStart = $this->getPostValue('dateStart');
-        $dateEnd = $this->getPostValue('dateEnd');
 
-        $tripId = (new TripBroker())->insert($userId, $bites, $hooks, $throws, $dateStart, $dateEnd);
+        $tripId = (new TripBroker())->insert($userId);
 
         return $this->json($tripId);
     }
