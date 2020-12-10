@@ -32,7 +32,7 @@ class CatchBroker extends Broker
     private function insertCatch($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat, $hotspotId = null): int
     {
         $sql = "insert into Catch values (default, ?, ?, ?, ?, ?, ?, point(?, ?));";
-        $this->query($sql, [$tripId, $hotspotId, $temperature, $pressure, $humidity, $time, $lng, $lat]);
+        $this->query($sql, [$tripId, $hotspotId, $temperature, $pressure, $humidity, $time, $lat, $lng]);
         return $this->getDatabase()->getLastInsertedId();
     }
 }
