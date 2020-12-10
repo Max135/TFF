@@ -3770,7 +3770,7 @@
 			}
 
 				#header > a[href="#menu"]:before {
-					content: "🐟";
+					content: "➡";
 					-moz-osx-font-smoothing: grayscale;
 					-webkit-font-smoothing: antialiased;
 					font-family: FontAwesome;
@@ -3961,12 +3961,12 @@
 			}
 
 			#menu .close:before {
-				content: '🐟';
+				content: 'X';
 				font-size: 1.25rem;
 			}
 
 			#menu .close:hover {
-				color: #000;
+				color: red;
 			}
 
 			@media screen and (max-width: 736px) {
