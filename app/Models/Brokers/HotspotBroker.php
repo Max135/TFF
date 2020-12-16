@@ -79,7 +79,7 @@ class HotspotBroker extends Broker
      */
     public function getListOfPressures($hotspotId)
     {
-        $sql = "Select T.dateTimeStart as tripDate, AVG(C.barometricPressure) as avgPressure From Hotspot H Join Catch C On H.id = C.hotspotId JOIN Trip T On C.tripId = T.id Where H.id = ? group by T.dateTimeStart";
+        $sql = "Select T.dateTimeStart as tripDate, ROUND(AVG(C.barometricPressure), 2) as avgPressure From Hotspot H Join Catch C On H.id = C.hotspotId JOIN Trip T On C.tripId = T.id Where H.id = ? group by T.dateTimeStart";
         return $this->select($sql, [$hotspotId]);
     }
 
