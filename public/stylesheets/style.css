@@ -386,6 +386,6 @@ tspan {
 .fish-picture {
     display: block;
     max-height:465px;
-    width: 100%;
+    width: auto;
     height: auto;
 }
