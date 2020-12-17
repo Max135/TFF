@@ -44,6 +44,7 @@ class ApiController extends Controller
         $temperature = $this->getPostValue('temperature');
         $pressure = $this->getPostValue('pressure');
         $humidity = $this->getPostValue('humidity');
+        $wind = $this->getPostValue('wind');
         $time = $this->getPostValue('time');
         $lng = $this->getPostValue('longitude');
         $lat = $this->getPostValue('latitude');
@@ -52,6 +53,7 @@ class ApiController extends Controller
         $weight = $this->getPostValue('weight');
 
         $catchId = (new CatchBroker())->insert($tripId, $temperature, $pressure, $humidity, $time, $lng, $lat);
+        (new CatchBroker())->insertWind($catchId, $wind);
         $pictureName = $this->savePicture();
         (new FishBroker())->insert($catchId, $species, $weight, $pictureName);
 
